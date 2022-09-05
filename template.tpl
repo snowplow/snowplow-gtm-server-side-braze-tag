@@ -789,153 +789,37 @@ ___TESTS___
 
 scenarios:
 - name: Test default config
-  code: |-
+  code: |
     const mockData = {
-      "apiEndpoint":"https://test.test",
-      "apiKey":"test",
-      "brazeExternalUserId":"user_id",
-      "includeSelfDescribingEvent":true,
-      "extractFromArray":true,
-      "includeAllEntities":true,
-      "includeCommonEventProperties":true,
-      "includeCommonUserProperties":true,
+      apiEndpoint: 'https://test.test',
+      apiKey: 'test',
+      brazeExternalUserId: 'user_id',
+      includeSelfDescribingEvent: true,
+      extractFromArray: true,
+      includeAllEntities: true,
+      includeCommonEventProperties: true,
+      includeCommonUserProperties: true,
     };
 
-    const testEvent = {
-      "event_name":"page_view",
-      "client_id":"d54a1904-7798-401a-be0b-1a83bea73634",
-      "user_id":"snow123",
-      "language":"en-GB",
-      "page_encoding":"UTF-8",
-      "page_hostname":"snowplowanalytics.com",
-      "page_location":"https://snowplowanalytics.com/",
-      "page_path":"/",
-      "page_referrer":"referer",
-      "page_title":"Collect, manage and operationalize behavioral data at scale | Snowplow",
-      "screen_resolution":"1920x1080",
-      "viewport_size":"745x1302",
-      "user_agent":"user-agent",
-      "origin":"origin",
-      "host":"host",
-      "x-sp-app_id":"website",
-      "x-sp-platform":"web",
-      "x-sp-dvce_created_tstamp":"1628586512246",
-      "x-sp-event_id":"8676de79-0eba-4435-ad95-8a41a8a0129c",
-      "x-sp-name_tracker":"sp",
-      "x-sp-v_tracker":"js-2.18.1",
-      "x-sp-domain_sessionid":"e7580b71-227b-4868-9ea9-322a263ce885",
-      "x-sp-domain_sessionidx":1,
-      "x-sp-br_cookies":"1",
-      "x-sp-br_colordepth":"24",
-      "x-sp-br_viewwidth":745,
-      "x-sp-br_viewheight":1302,
-      "x-sp-dvce_screenwidth":1920,
-      "x-sp-dvce_screenheight":1080,
-      "x-sp-doc_charset":"UTF-8",
-      "x-sp-doc_width":730,
-      "x-sp-doc_height":12393,
-      "x-sp-dvce_sent_tstamp":"1628586512248",
-      "x-sp-tp2":{"e":"pv","url":"https://snowplowanalytics.com/","page":"Collect, manage and operationalize behavioral data at scale | Snowplow","tv":"js-2.18.1","tna":"sp","aid":"website","p":"web","tz":"Europe/London","lang":"en-GB","cs":"UTF-8","res":"1920x1080","cd":"24","cookie":"1","eid":"8676de79-0eba-4435-ad95-8a41a8a0129c","dtm":"1628586512246","cx":"ewogICJzY2hlbWEiOiAiaWdsdTpjb20uc25vd3Bsb3dhbmFseXRpY3Muc25vd3Bsb3cvY29udGV4dHMvanNvbnNjaGVtYS8xLTAtMCIsCiAgImRhdGEiOiBbCiAgICB7CiAgICAgICJzY2hlbWEiOiAiaWdsdTpjb20uc25vd3Bsb3dhbmFseXRpY3Muc25vd3Bsb3cvd2ViX3BhZ2UvanNvbnNjaGVtYS8xLTAtMCIsCiAgICAgICJkYXRhIjogeyAiaWQiOiAiYTg2YzQyZTUtYjgzMS00NWM4LWI3MDYtZTIxNGMyNmI0YjNkIiB9CiAgICB9LAogICAgewogICAgICAic2NoZW1hIjogImlnbHU6b3JnLnczL1BlcmZvcm1hbmNlVGltaW5nL2pzb25zY2hlbWEvMS0wLTAiLAogICAgICAiZGF0YSI6IHsKICAgICAgICAibmF2aWdhdGlvblN0YXJ0IjogMTYyODU4NjUwODYxMCwKICAgICAgICAidW5sb2FkRXZlbnRTdGFydCI6IDAsCiAgICAgICAgInVubG9hZEV2ZW50RW5kIjogMCwKICAgICAgICAicmVkaXJlY3RTdGFydCI6IDAsCiAgICAgICAgInJlZGlyZWN0RW5kIjogMCwKICAgICAgICAiZmV0Y2hTdGFydCI6IDE2Mjg1ODY1MDg2MTAsCiAgICAgICAgImRvbWFpbkxvb2t1cFN0YXJ0IjogMTYyODU4NjUwODYzNywKICAgICAgICAiZG9tYWluTG9va3VwRW5kIjogMTYyODU4NjUwODY5MSwKICAgICAgICAiY29ubmVjdFN0YXJ0IjogMTYyODU4NjUwODY5MSwKICAgICAgICAiY29ubmVjdEVuZCI6IDE2Mjg1ODY1MDg3NjMsCiAgICAgICAgInNlY3VyZUNvbm5lY3Rpb25TdGFydCI6IDE2Mjg1ODY1MDg3MjEsCiAgICAgICAgInJlcXVlc3RTdGFydCI6IDE2Mjg1ODY1MDg3NjMsCiAgICAgICAgInJlc3BvbnNlU3RhcnQiOiAxNjI4NTg2NTA4Nzk3LAogICAgICAgICJyZXNwb25zZUVuZCI6IDE2Mjg1ODY1MDg4MjEsCiAgICAgICAgImRvbUxvYWRpbmciOiAxNjI4NTg2NTA5MDc2LAogICAgICAgICJkb21JbnRlcmFjdGl2ZSI6IDE2Mjg1ODY1MDkzODEsCiAgICAgICAgImRvbUNvbnRlbnRMb2FkZWRFdmVudFN0YXJ0IjogMTYyODU4NjUwOTQwOCwKICAgICAgICAiZG9tQ29udGVudExvYWRlZEV2ZW50RW5kIjogMTYyODU4NjUwOTQxNywKICAgICAgICAiZG9tQ29tcGxldGUiOiAxNjI4NTg2NTEwMzMyLAogICAgICAgICJsb2FkRXZlbnRTdGFydCI6IDE2Mjg1ODY1MTAzMzIsCiAgICAgICAgImxvYWRFdmVudEVuZCI6IDE2Mjg1ODY1MTAzMzQKICAgICAgfQogICAgfSwKICAgIHsKICAgICAgInNjaGVtYSI6ICJpZ2x1OmNvbS5nb29nbGUudGFnLW1hbmFnZXIuc2VydmVyLXNpZGUvdXNlcl9kYXRhL2pzb25zY2hlbWEvMS0wLTAiLAogICAgICAiZGF0YSI6IHsgCiAgICAgICAgImVtYWlsX2FkZHJlc3MiOiAiZm9vQGV4YW1wbGUuY29tIiwKICAgICAgICAicGhvbmVfbnVtYmVyIjogIisxNTU1MTIzNDU2NyIsCiAgICAgICAgImFkZHJlc3MiOiB7CiAgICAgICAgICAiZmlyc3RfbmFtZSI6ICJKYW5lIiwKICAgICAgICAgICJsYXN0X25hbWUiOiAiRG9lIiwKICAgICAgICAgICJzdHJlZXQiOiAiMTIzIEZha2UgU3QiLAogICAgICAgICAgImNpdHkiOiAiU2FuIEZyYW5jaXNjbyIsCiAgICAgICAgICAicmVnaW9uIjogIkNBIiwKICAgICAgICAgICJwb3N0YWxfY29kZSI6ICI5NDAxNiIsCiAgICAgICAgICAiY291bnRyeSI6ICJVUyIgCiAgICAgICAgfQogICAgICB9CiAgICB9CiAgXQp9Cg","vp":"745x1302","ds":"730x12393","vid":"1","sid":"e7580b71-227b-4868-9ea9-322a263ce885","duid":"d54a1904-7798-401a-be0b-1a83bea73634","stm":"1628586512248","uid":"snow123"},
-      "x-sp-contexts_com_snowplowanalytics_snowplow_web_page_1":[
-        {
-          "id":"a86c42e5-b831-45c8-b706-e214c26b4b3d"
-        }
-      ],
-      "x-sp-contexts_org_w3_performance_timing_1":[
-        {
-          "navigationStart":1628586508610,
-          "unloadEventStart":0,
-          "unloadEventEnd":0,
-          "redirectStart":0,
-          "redirectEnd":0,
-          "fetchStart":1628586508610,
-          "domainLookupStart":1628586508637,
-          "domainLookupEnd":1628586508691,
-          "connectStart":1628586508691,
-          "connectEnd":1628586508763,
-          "secureConnectionStart":1628586508721,
-          "requestStart":1628586508763,
-          "responseStart":1628586508797,
-          "responseEnd":1628586508821,
-          "domLoading":1628586509076,
-          "domInteractive":1628586509381,
-          "domContentLoadedEventStart":1628586509408,
-          "domContentLoadedEventEnd":1628586509417,
-          "domComplete":1628586510332,
-          "loadEventStart":1628586510332,
-          "loadEventEnd":1628586510334
-        }
-      ],
-      "x-sp-contexts_com_google_tag-manager_server-side_user_data_1":[
-        {
-          "email_address":"foo@example.com",
-          "phone_number":"+15551234567",
-          "address":{
-            "first_name":"Jane",
-            "last_name":"Doe",
-            "street":"123 Fake St",
-            "city":"San Francisco",
-            "region":"CA",
-            "postal_code":"94016",
-            "country":"US"
-          }
-        }
-      ],
-      "user_data":{
-        "email_address":"foo@example.com",
-        "phone_number":"+15551234567",
-        "address":{
-          "first_name":"Jane",
-          "last_name":"Doe",
-          "street":"123 Fake St",
-          "city":"San Francisco",
-          "region":"CA",
-          "postal_code":"94016",
-          "country":"US"
-        }
-      },
-      "ga_session_id":"e7580b71-227b-4868-9ea9-322a263ce885",
-      "ga_session_number":"1",
-      "x-ga-mp2-seg":"1",
-      "x-ga-protocol_version":"2",
-      "x-ga-page_id":"a86c42e5-b831-45c8-b706-e214c26b4b3d",
-      "ip_override":"1.2.3.4"
-    };
-
-    // Test imports
-    const jsonApi = require('JSON');
-    const getTypeOf = require('getType');
+    const testEvent = mockEventObjectPageView;
 
     // to assert on
     let argUrl, argCallback, argOptions, argBody;
 
     // Mocks
-    mock('sendHttpRequest', function() {
+    mock('sendHttpRequest', function () {
       argUrl = arguments[0];
       argOptions = arguments[2];
       argBody = arguments[3];
     });
 
-    mock('getAllEventData', function() {
+    mock('getAllEventData', function () {
       return testEvent;
     });
 
-    const getFromPath = (path, obj) => {
-      if (getTypeOf(path) === 'string' && getTypeOf(obj) === 'object') {
-        const splitPath = path.split('.').filter((prop) => !!prop);
-        return splitPath.reduce((acc, curr) => acc && acc[curr], obj);
-      }
-      return undefined;
-    };
-
-    mock('getEventData', function(x) {
+    mock('getEventData', function (x) {
       return getFromPath(x, testEvent);
     });
-
-    mock('getTimestampMillis', function() {
-      return 1642397654056;  // '2022-01-17T05:34:14.056Z'
-    });
-    const testTime = '2022-01-17T05:34:14.056Z';
 
     // Call runCode to run the template's code
     runCode(mockData);
@@ -946,203 +830,122 @@ scenarios:
 
     assertThat(argOptions.method).isStrictlyEqualTo('POST');
     assertThat(argOptions.timeout).isStrictlyEqualTo(5000);
-    assertThat(argOptions.headers['Content-Type']).isStrictlyEqualTo('application/json');
-    assertThat(argOptions.headers.Authorization).isStrictlyEqualTo('Bearer ' + mockData.apiKey);
+    assertThat(argOptions.headers['Content-Type']).isStrictlyEqualTo(
+      'application/json'
+    );
+    assertThat(argOptions.headers.Authorization).isStrictlyEqualTo(
+      'Bearer ' + mockData.apiKey
+    );
 
     const body = jsonApi.parse(argBody);
     const expectedBody = {
-      "attributes":[
+      attributes: [
         {
-          "language":"en-GB",
-          "email":"foo@example.com",
-          "phone":"+15551234567",
-          "address":{
-            "first_name":"Jane",
-            "last_name":"Doe",
-            "street":"123 Fake St",
-            "city":"San Francisco",
-            "region":"CA",
-            "postal_code":"94016",
-            "country":"US"
+          language: 'en-GB',
+          email: 'foo@example.com',
+          phone: '+15551234567',
+          address: {
+            first_name: 'Jane',
+            last_name: 'Doe',
+            street: '123 Fake St',
+            city: 'San Francisco',
+            region: 'CA',
+            postal_code: '94016',
+            country: 'US',
           },
-          "external_id":"snow123"
-        }
+          external_id: 'snow123',
+        },
       ],
-      "events":[
+      events: [
         {
-          "name":"page_view",
-          "time": testTime,
-          "properties":{
-            "page_location":"https://snowplowanalytics.com/",
-            "page_encoding":"UTF-8",
-            "page_referrer":"referer",
-            "page_title":"Collect, manage and operationalize behavioral data at scale | Snowplow",
-            "screen_resolution":"1920x1080",
-            "viewport_size":"745x1302",
-            "contexts_com_snowplowanalytics_snowplow_web_page_1":{
-              "id":"a86c42e5-b831-45c8-b706-e214c26b4b3d"
+          name: 'page_view',
+          time: testTime,
+          properties: {
+            page_location: 'https://snowplowanalytics.com/',
+            page_encoding: 'UTF-8',
+            page_referrer: 'referer',
+            page_title:
+              'Collect, manage and operationalize behavioral data at scale | Snowplow',
+            screen_resolution: '1920x1080',
+            viewport_size: '745x1302',
+            contexts_com_snowplowanalytics_snowplow_web_page_1: {
+              id: 'a86c42e5-b831-45c8-b706-e214c26b4b3d',
             },
-            "contexts_org_w3_performance_timing_1":{
-              "navigationStart":1628586508610,
-              "unloadEventStart":0,
-              "unloadEventEnd":0,
-              "redirectStart":0,
-              "redirectEnd":0,
-              "fetchStart":1628586508610,
-              "domainLookupStart":1628586508637,
-              "domainLookupEnd":1628586508691,
-              "connectStart":1628586508691,
-              "connectEnd":1628586508763,
-              "secureConnectionStart":1628586508721,
-              "requestStart":1628586508763,
-              "responseStart":1628586508797,
-              "responseEnd":1628586508821,
-              "domLoading":1628586509076,
-              "domInteractive":1628586509381,
-              "domContentLoadedEventStart":1628586509408,
-              "domContentLoadedEventEnd":1628586509417,
-              "domComplete":1628586510332,
-              "loadEventStart":1628586510332,
-              "loadEventEnd":1628586510334
+            contexts_org_w3_performance_timing_1: {
+              navigationStart: 1628586508610,
+              unloadEventStart: 0,
+              unloadEventEnd: 0,
+              redirectStart: 0,
+              redirectEnd: 0,
+              fetchStart: 1628586508610,
+              domainLookupStart: 1628586508637,
+              domainLookupEnd: 1628586508691,
+              connectStart: 1628586508691,
+              connectEnd: 1628586508763,
+              secureConnectionStart: 1628586508721,
+              requestStart: 1628586508763,
+              responseStart: 1628586508797,
+              responseEnd: 1628586508821,
+              domLoading: 1628586509076,
+              domInteractive: 1628586509381,
+              domContentLoadedEventStart: 1628586509408,
+              domContentLoadedEventEnd: 1628586509417,
+              domComplete: 1628586510332,
+              loadEventStart: 1628586510332,
+              loadEventEnd: 1628586510334,
             },
-            "contexts_com_google_tag-manager_server-side_user_data_1":{
-              "email_address":"foo@example.com",
-              "phone_number":"+15551234567",
-              "address":{
-                "first_name":"Jane",
-                "last_name":"Doe",
-                "street":"123 Fake St",
-                "city":"San Francisco",
-                "region":"CA",
-                "postal_code":"94016",
-                "country":"US"
-              }
-            }
+            'contexts_com_google_tag-manager_server-side_user_data_1': {
+              email_address: 'foo@example.com',
+              phone_number: '+15551234567',
+              address: {
+                first_name: 'Jane',
+                last_name: 'Doe',
+                street: '123 Fake St',
+                city: 'San Francisco',
+                region: 'CA',
+                postal_code: '94016',
+                country: 'US',
+              },
+            },
           },
-          "external_id":"snow123"
-        }
-      ]
+          external_id: 'snow123',
+        },
+      ],
     };
     assertThat(body).isEqualTo(expectedBody);
 - name: Test Snowplow settings 0
-  code: |-
+  code: |
     const mockData = {
-      "apiEndpoint":"https://test.test",
-      "apiKey":"test",
-      "brazeExternalUserId":"x-sp-network_userid",
-      "includeSelfDescribingEvent":false,
-      "extractFromArray":false,
-      "includeAllEntities":false,
-      "includeUnmappedEntities":false,
-      "includeCommonEventProperties":true,
-      "includeCommonUserProperties":true,
+      apiEndpoint: 'https://test.test',
+      apiKey: 'test',
+      brazeExternalUserId: 'x-sp-network_userid',
+      includeSelfDescribingEvent: false,
+      extractFromArray: false,
+      includeAllEntities: false,
+      includeUnmappedEntities: false,
+      includeCommonEventProperties: true,
+      includeCommonUserProperties: true,
     };
 
-    const testEvent = {
-      "event_name": "link_click",
-      "client_id":"bc2e92ec6c204a14",
-      "page_hostname":"www.snowplowanalytics.com",
-      "page_location":"http://www.snowplowanalytics.com",
-      "page_path":"/",
-      "page_referrer":"referer",
-      "page_title":"On Analytics",
-      "screen_resolution":"1920x1080",
-      "user_id":"jon.doe",
-      "viewport_size":"745x1302",
-      "origin":"origin",
-      "host":"host",
-      "x-sp-app_id":"angry-birds",
-      "x-sp-platform":"web",
-      "x-sp-etl_tstamp":"2017-01-26T00:01:25.292Z",
-      "x-sp-collector_tstamp":"2013-11-26T00:02:05Z",
-      "x-sp-dvce_created_tstamp":"2013-11-26T00:03:57.885Z",
-      "x-sp-event":"page_view",
-      "x-sp-event_id":"c6ef3124-b53a-4b13-a233-0088f79dcbcb",
-      "x-sp-txn_id":41828,
-      "x-sp-name_tracker":"cloudfront-1",
-      "x-sp-v_tracker":"js-2.1.0",
-      "x-sp-v_collector":"clj-tomcat-0.1.0",
-      "x-sp-v_etl":"serde-0.5.2",
-      "x-sp-user_fingerprint":"2161814971",
-      "x-sp-domain_sessionidx":3,
-      "x-sp-network_userid":"ecdff4d0-9175-40ac-a8bb-325c49733607",
-      "x-sp-geo_country":"US",
-      "x-sp-geo_region":"TX",
-      "x-sp-geo_city":"New York",
-      "x-sp-geo_zipcode":"94109",
-      "x-sp-geo_latitude":37.443604,
-      "x-sp-geo_longitude":-122.4124,
-      "x-sp-geo_location":"37.443604,-122.4124",
-      "x-sp-geo_region_name":"Florida",
-      "x-sp-ip_isp":"FDN Communications",
-      "x-sp-ip_organization":"Bouygues Telecom",
-      "x-sp-ip_domain":"nuvox.net",
-      "x-sp-ip_netspeed":"Cable/DSL",
-      "x-sp-page_urlscheme":"http",
-      "x-sp-page_urlhost":"www.snowplowanalytics.com",
-      "x-sp-page_urlport":80,
-      "x-sp-page_urlpath":"/product/index.html",
-      "x-sp-page_urlquery":"id=GTM-DLRG",
-      "x-sp-page_urlfragment":"4-conclusion",
-      "x-sp-br_features_pdf":true,
-      "x-sp-br_features_flash":false,
-      "x-sp-domain_sessionid":"2b15e5c8-d3b1-11e4-b9d6-1681e6b88ec1",
-      "x-sp-derived_tstamp":"2013-11-26T00:03:57.886Z",
-      "x-sp-event_vendor":"com.snowplowanalytics.snowplow",
-      "x-sp-event_name":"link_click",
-      "x-sp-event_format":"jsonschema",
-      "x-sp-event_version":"1-0-0",
-      "x-sp-event_fingerprint":"e3dbfa9cca0412c3d4052863cefb547f",
-      "x-sp-true_tstamp":"2013-11-26T00:03:57.886Z",
-      "x-sp-self_describing_event_com_snowplowanalytics_snowplow_link_click_1": {
-        "targetUrl":"http://www.example.com",
-        "elementClasses":["foreground"],
-        "elementId":"exampleLink"
-      },
-      "x-sp-contexts_com_snowplowanalytics_snowplow_ua_parser_context_1":[
-        {"useragentFamily":"IE","useragentMajor":"7","useragentMinor":"0","useragentPatch":null,"useragentVersion":"IE 7.0","osFamily":"Windows XP","osMajor":null,"osMinor":null,"osPatch":null,"osPatchMinor":null,"osVersion":"Windows XP","deviceFamily":"Other"}
-      ],
-      "ga_session_id":"2b15e5c8-d3b1-11e4-b9d6-1681e6b88ec1",
-      "ga_session_number":"3",
-      "x-ga-mp2-seg":"1",
-      "x-ga-protocol_version":"2",
-      "ip_override":"1.2.3.4"
-    };
-
-    // Test imports
-    const jsonApi = require('JSON');
-    const getTypeOf = require('getType');
+    const testEvent = mockEventObjectLinkClick;
 
     // to assert on
     let argUrl, argCallback, argOptions, argBody;
 
     // Mocks
-    mock('sendHttpRequest', function() {
+    mock('sendHttpRequest', function () {
       argUrl = arguments[0];
       argOptions = arguments[2];
       argBody = arguments[3];
     });
 
-    mock('getAllEventData', function() {
+    mock('getAllEventData', function () {
       return testEvent;
     });
 
-    const getFromPath = (path, obj) => {
-      if (getTypeOf(path) === 'string' && getTypeOf(obj) === 'object') {
-        const splitPath = path.split('.').filter((prop) => !!prop);
-        return splitPath.reduce((acc, curr) => acc && acc[curr], obj);
-      }
-      return undefined;
-    };
-
-    mock('getEventData', function(x) {
+    mock('getEventData', function (x) {
       return getFromPath(x, testEvent);
     });
-
-    mock('getTimestampMillis', function() {
-      return 1642397654056;  // '2022-01-17T05:34:14.056Z'
-    });
-    const testTime = '2022-01-17T05:34:14.056Z';
 
     // Call runCode to run the template's code
     runCode(mockData);
@@ -1153,164 +956,83 @@ scenarios:
 
     assertThat(argOptions.method).isStrictlyEqualTo('POST');
     assertThat(argOptions.timeout).isStrictlyEqualTo(5000);
-    assertThat(argOptions.headers['Content-Type']).isStrictlyEqualTo('application/json');
-    assertThat(argOptions.headers.Authorization).isStrictlyEqualTo('Bearer ' + mockData.apiKey);
+    assertThat(argOptions.headers['Content-Type']).isStrictlyEqualTo(
+      'application/json'
+    );
+    assertThat(argOptions.headers.Authorization).isStrictlyEqualTo(
+      'Bearer ' + mockData.apiKey
+    );
 
     const body = jsonApi.parse(argBody);
     const expectedBody = {
-      "attributes":[
+      attributes: [
         {
-          "country":"US",
-          "current_location":{
-            "longitude":-122.4124,
-            "latitude":37.443604
+          country: 'US',
+          current_location: {
+            longitude: -122.4124,
+            latitude: 37.443604,
           },
-          "external_id":"ecdff4d0-9175-40ac-a8bb-325c49733607"
-        }
+          external_id: 'ecdff4d0-9175-40ac-a8bb-325c49733607',
+        },
       ],
-      "events":[
+      events: [
         {
-          "name":"link_click",
-          "time":testTime,
-          "properties":{
-            "page_location":"http://www.snowplowanalytics.com",
-            "page_referrer":"referer",
-            "page_title":"On Analytics",
-            "screen_resolution":"1920x1080",
-            "viewport_size":"745x1302"
+          name: 'link_click',
+          time: testTime,
+          properties: {
+            page_location: 'http://www.snowplowanalytics.com',
+            page_referrer: 'referer',
+            page_title: 'On Analytics',
+            screen_resolution: '1920x1080',
+            viewport_size: '745x1302',
           },
-          "external_id":"ecdff4d0-9175-40ac-a8bb-325c49733607"
-        }
-      ]
+          external_id: 'ecdff4d0-9175-40ac-a8bb-325c49733607',
+        },
+      ],
     };
     assertThat(body).isEqualTo(expectedBody);
 - name: Test Snowplow settings 1
-  code: |-
+  code: |
     const mockData = {
-      "apiEndpoint":"https://test.test",
-      "apiKey":"test",
-      "brazeExternalUserId":"x-sp-network_userid",
-      "includeSelfDescribingEvent":true,
-      "extractFromArray":true,
-      "includeAllEntities":false,
-      "includeUnmappedEntities":false,
-      "entityMappingRules":[
+      apiEndpoint: 'https://test.test',
+      apiKey: 'test',
+      brazeExternalUserId: 'x-sp-network_userid',
+      includeSelfDescribingEvent: true,
+      extractFromArray: true,
+      includeAllEntities: false,
+      includeUnmappedEntities: false,
+      entityMappingRules: [
         {
-          "key":"x-sp-contexts_com_snowplowanalytics_snowplow_ua_parser_context_1",
-          "mappedKey":"ua_parser",
-          "propertiesObjectToPopulate":"user_attributes_object"
-        }
+          key: 'x-sp-contexts_com_snowplowanalytics_snowplow_ua_parser_context_1',
+          mappedKey: 'ua_parser',
+          propertiesObjectToPopulate: 'user_attributes_object',
+        },
       ],
-      "includeCommonEventProperties":true,
-      "includeCommonUserProperties":true,
+      includeCommonEventProperties: true,
+      includeCommonUserProperties: true,
     };
 
-    const testEvent = {
-      "event_name": "link_click",
-      "client_id":"bc2e92ec6c204a14",
-      "page_hostname":"www.snowplowanalytics.com",
-      "page_location":"http://www.snowplowanalytics.com",
-      "page_path":"/",
-      "page_referrer":"referer",
-      "page_title":"On Analytics",
-      "screen_resolution":"1920x1080",
-      "viewport_size":"745x1302",
-      "origin":"origin",
-      "host":"host",
-      "x-sp-app_id":"angry-birds",
-      "x-sp-platform":"web",
-      "x-sp-etl_tstamp":"2017-01-26T00:01:25.292Z",
-      "x-sp-collector_tstamp":"2013-11-26T00:02:05Z",
-      "x-sp-dvce_created_tstamp":"2013-11-26T00:03:57.885Z",
-      "x-sp-event":"page_view",
-      "x-sp-event_id":"c6ef3124-b53a-4b13-a233-0088f79dcbcb",
-      "x-sp-txn_id":41828,
-      "x-sp-name_tracker":"cloudfront-1",
-      "x-sp-v_tracker":"js-2.1.0",
-      "x-sp-v_collector":"clj-tomcat-0.1.0",
-      "x-sp-v_etl":"serde-0.5.2",
-      "x-sp-user_fingerprint":"2161814971",
-      "x-sp-domain_sessionidx":3,
-      "x-sp-network_userid":"ecdff4d0-9175-40ac-a8bb-325c49733607",
-      "x-sp-geo_country":"US",
-      "x-sp-geo_region":"TX",
-      "x-sp-geo_city":"New York",
-      "x-sp-geo_zipcode":"94109",
-      "x-sp-geo_latitude":37.443604,
-      "x-sp-geo_longitude":-122.4124,
-      "x-sp-geo_location":"37.443604,-122.4124",
-      "x-sp-geo_region_name":"Florida",
-      "x-sp-ip_isp":"FDN Communications",
-      "x-sp-ip_organization":"Bouygues Telecom",
-      "x-sp-ip_domain":"nuvox.net",
-      "x-sp-ip_netspeed":"Cable/DSL",
-      "x-sp-page_urlscheme":"http",
-      "x-sp-page_urlhost":"www.snowplowanalytics.com",
-      "x-sp-page_urlport":80,
-      "x-sp-page_urlpath":"/product/index.html",
-      "x-sp-page_urlquery":"id=GTM-DLRG",
-      "x-sp-page_urlfragment":"4-conclusion",
-      "x-sp-br_features_pdf":true,
-      "x-sp-br_features_flash":false,
-      "x-sp-domain_sessionid":"2b15e5c8-d3b1-11e4-b9d6-1681e6b88ec1",
-      "x-sp-derived_tstamp":"2013-11-26T00:03:57.886Z",
-      "x-sp-event_vendor":"com.snowplowanalytics.snowplow",
-      "x-sp-event_name":"link_click",
-      "x-sp-event_format":"jsonschema",
-      "x-sp-event_version":"1-0-0",
-      "x-sp-event_fingerprint":"e3dbfa9cca0412c3d4052863cefb547f",
-      "x-sp-true_tstamp":"2013-11-26T00:03:57.886Z",
-      "x-sp-self_describing_event_com_snowplowanalytics_snowplow_link_click_1": {
-        "targetUrl":"http://www.example.com",
-        "elementClasses":["foreground"],
-        "elementId":"exampleLink"
-      },
-      "x-sp-contexts_com_snowplowanalytics_snowplow_ua_parser_context_1":[
-        {"useragentFamily":"IE","useragentMajor":"7","useragentMinor":"0","useragentPatch":null,"useragentVersion":"IE 7.0","osFamily":"Windows XP","osMajor":null,"osMinor":null,"osPatch":null,"osPatchMinor":null,"osVersion":"Windows XP","deviceFamily":"Other"}
-      ],
-      "ga_session_id":"2b15e5c8-d3b1-11e4-b9d6-1681e6b88ec1",
-      "ga_session_number":"3",
-      "x-ga-mp2-seg":"1",
-      "x-ga-protocol_version":"2",
-      "ip_override":"1.2.3.4"
-    };
-
-    // Test imports
-    const jsonApi = require('JSON');
-    const getTypeOf = require('getType');
+    const testEvent = mockEventObjectLinkClick;
 
     // to assert on
     let argUrl, argCallback, argOptions, argBody;
 
     // Mocks
-    mock('sendHttpRequest', function() {
+    mock('sendHttpRequest', function () {
       argUrl = arguments[0];
       argOptions = arguments[2];
       argBody = arguments[3];
     });
 
-    mock('getAllEventData', function() {
+    mock('getAllEventData', function () {
       return testEvent;
     });
 
-    const getFromPath = (path, obj) => {
-      if (getTypeOf(path) === 'string' && getTypeOf(obj) === 'object') {
-        const splitPath = path.split('.').filter((prop) => !!prop);
-        return splitPath.reduce((acc, curr) => acc && acc[curr], obj);
-      }
-      return undefined;
-    };
-
-    mock('getEventData', function(x) {
+    mock('getEventData', function (x) {
       return getFromPath(x, testEvent);
     });
 
-    mock('getTimestampMillis', function() {
-      return 1642397654056;  // '2022-01-17T05:34:14.056Z'
-    });
-    const testTime = '2022-01-17T05:34:14.056Z';
-
-    // Call runCode to run the template's code.a
+    // Call runCode to run the template's code
     runCode(mockData);
 
     // Assert
@@ -1319,157 +1041,108 @@ scenarios:
 
     assertThat(argOptions.method).isStrictlyEqualTo('POST');
     assertThat(argOptions.timeout).isStrictlyEqualTo(5000);
-    assertThat(argOptions.headers['Content-Type']).isStrictlyEqualTo('application/json');
-    assertThat(argOptions.headers.Authorization).isStrictlyEqualTo('Bearer ' + mockData.apiKey);
+    assertThat(argOptions.headers['Content-Type']).isStrictlyEqualTo(
+      'application/json'
+    );
+    assertThat(argOptions.headers.Authorization).isStrictlyEqualTo(
+      'Bearer ' + mockData.apiKey
+    );
 
     const body = jsonApi.parse(argBody);
     const expectedBody = {
-      "attributes":[
+      attributes: [
         {
-          "country":"US",
-          "current_location":{
-            "longitude":-122.4124,
-            "latitude":37.443604
+          country: 'US',
+          current_location: {
+            longitude: -122.4124,
+            latitude: 37.443604,
           },
-          "ua_parser":{
-            "useragentFamily":"IE",
-            "useragentMajor":"7",
-            "useragentMinor":"0",
-            "useragentPatch":null,
-            "useragentVersion":"IE 7.0",
-            "osFamily":"Windows XP",
-            "osMajor":null,
-            "osMinor":null,
-            "osPatch":null,
-            "osPatchMinor":null,
-            "osVersion":"Windows XP",
-            "deviceFamily":"Other"
+          ua_parser: {
+            useragentFamily: 'IE',
+            useragentMajor: '7',
+            useragentMinor: '0',
+            useragentPatch: null,
+            useragentVersion: 'IE 7.0',
+            osFamily: 'Windows XP',
+            osMajor: null,
+            osMinor: null,
+            osPatch: null,
+            osPatchMinor: null,
+            osVersion: 'Windows XP',
+            deviceFamily: 'Other',
           },
-          "external_id":"ecdff4d0-9175-40ac-a8bb-325c49733607"
-        }
+          external_id: 'ecdff4d0-9175-40ac-a8bb-325c49733607',
+        },
       ],
-      "events":[
+      events: [
         {
-          "name":"link_click",
-          "time":testTime,
-          "properties":{
-            "page_location":"http://www.snowplowanalytics.com",
-            "page_referrer":"referer",
-            "page_title":"On Analytics",
-            "screen_resolution":"1920x1080",
-            "viewport_size":"745x1302",
-            "self_describing_event_com_snowplowanalytics_snowplow_link_click_1":{
-              "targetUrl":"http://www.example.com",
-              "elementClasses":["foreground"],
-              "elementId":"exampleLink"
-            }
+          name: 'link_click',
+          time: testTime,
+          properties: {
+            page_location: 'http://www.snowplowanalytics.com',
+            page_referrer: 'referer',
+            page_title: 'On Analytics',
+            screen_resolution: '1920x1080',
+            viewport_size: '745x1302',
+            self_describing_event_com_snowplowanalytics_snowplow_link_click_1: {
+              targetUrl: 'http://www.example.com',
+              elementClasses: ['foreground'],
+              elementId: 'exampleLink',
+            },
           },
-          "external_id":"ecdff4d0-9175-40ac-a8bb-325c49733607"
-        }
-      ]
+          external_id: 'ecdff4d0-9175-40ac-a8bb-325c49733607',
+        },
+      ],
     };
 
     assertThat(body).isEqualTo(expectedBody);
 - name: Test Snowplow settings 2
-  code: |-
+  code: |
     const mockData = {
-      "apiEndpoint":"https://test.test",
-      "apiKey":"test",
-      "brazeExternalUserId":"user_id",
-      "includeSelfDescribingEvent":true,
-      "extractFromArray":false,
-      "includeAllEntities":false,
-      "includeUnmappedEntities":true,
-      "entityMappingRules":[
+      apiEndpoint: 'https://test.test',
+      apiKey: 'test',
+      brazeExternalUserId: 'user_id',
+      includeSelfDescribingEvent: true,
+      extractFromArray: false,
+      includeAllEntities: false,
+      includeUnmappedEntities: false,
+      entityMappingRules: [
         {
-          "key":"iglu:com.snowplowanalytics.snowplow/mobile_context/jsonschema/1-0-2",
-          "mappedKey":"mobile_context",
-          "propertiesObjectToPopulate":"event_object"
-        }
+          key: 'iglu:com.snowplowanalytics.snowplow/mobile_context/jsonschema/1-0-2',
+          mappedKey: 'mobile_context',
+          propertiesObjectToPopulate: 'event_object',
+        },
+        {
+          key: 'contexts_com_snowplowanalytics_snowplow_media_player_1',
+          mappedKey: 'media_player',
+          propertiesObjectToPopulate: 'event_object',
+        },
       ],
-      "includeCommonEventProperties":true,
-      "includeCommonUserProperties":true,
+      includeCommonEventProperties: true,
+      includeCommonUserProperties: true,
     };
 
-    const testEvent = {
-      "event_name":"foo",
-      "language":"en-US",
-      "page_encoding":"UTF-8",
-      "page_hostname":"test.example.com",
-      "page_location":"http://test.example.com",
-      "page_path":"/",
-      "screen_resolution":"1920x1080",
-      "user_id":"tester",
-      "viewport_size":"1023x980",
-      "user_agent":"curl/7.74.0",
-      "host":"engineering-sandbox.appspot.com",
-      "x-sp-app_id":"testApp",
-      "x-sp-platform":"srv",
-      "x-sp-dvce_created_tstamp":"1634551546989",
-      "x-sp-name_tracker":"sptest",
-      "x-sp-v_tracker":"curl",
-      "x-sp-domain_sessionidx":1,
-      "x-sp-br_colordepth":"24",
-      "x-sp-br_viewwidth":1023,
-      "x-sp-br_viewheight":980,
-      "x-sp-dvce_screenwidth":1920,
-      "x-sp-dvce_screenheight":1080,
-      "x-sp-doc_charset":"UTF-8",
-      "x-sp-doc_width":1023,
-      "x-sp-doc_height":980,
-      "x-sp-tp2":{"e":"ue","p":"srv","tna":"sptest","aid":"testApp","cs":"UTF-8","lang":"en-US","res":"1920x1080","cd":"24","tz":"Europe/London","dtm":"1634551546989","vp":"1023x980","ds":"1023x980","vid":"1","uid":"tester","url":"http://test.example.com","tv":"curl","ue_pr":"{\"schema\": \"iglu:com.snowplowanalytics.snowplow/unstruct_event/jsonschema/1-0-0\",\"data\":{\"schema\":\"iglu:com.acme.test/foo/jsonschema/1-0-0\",\"data\":{\"foo_age\":10}}}","co":"{\"schema\":\"iglu:com.snowplowanalytics.snowplow/contexts/jsonschema/1-0-0\",\"data\":[{\"schema\":\"iglu:com.snowplowanalytics.snowplow/mobile_context/jsonschema/1-0-2\",\"data\":{\"osType\":\"myOsType\",\"osVersion\":\"myOsVersion\",\"deviceManufacturer\":\"myDevMan\",\"deviceModel\":\"myDevModel\"}},{\"schema\":\"iglu:com.snowplowanalytics.snowplow/web_page/jsonschema/1-0-0\",\"data\":{\"id\":\"c000a256-1e13-4cde-a5b4-d7a00cf88003\"}}]}"},
-      "x-sp-self_describing_event_com_acme_test_foo_1":{
-        "foo_age":10
-      },
-      "x-sp-contexts_com_snowplowanalytics_snowplow_mobile_context_1":[
-        {"osType":"myOsType","osVersion":"myOsVersion","deviceManufacturer":"myDevMan","deviceModel":"myDevModel"}
-      ],
-      "x-sp-contexts_com_snowplowanalytics_snowplow_web_page_1":[
-        {"id":"c000a256-1e13-4cde-a5b4-d7a00cf88003"}
-      ],
-      "ga_session_number":"1",
-      "x-ga-mp2-seg":"1",
-      "x-ga-protocol_version":"2",
-      "x-ga-page_id":"c000a256-1e13-4cde-a5b4-d7a00cf88003",
-      "ip_override":"1.2.3.4"
-    };
-
-    // Test imports
-    const jsonApi = require('JSON');
-    const getTypeOf = require('getType');
+    const testEvent = mockEventObjectSelfDesc;
 
     // to assert on
     let argUrl, argCallback, argOptions, argBody;
 
     // Mocks
-    mock('sendHttpRequest', function() {
+    mock('sendHttpRequest', function () {
       argUrl = arguments[0];
       argOptions = arguments[2];
       argBody = arguments[3];
     });
 
-    mock('getAllEventData', function() {
+    mock('getAllEventData', function () {
       return testEvent;
     });
 
-    const getFromPath = (path, obj) => {
-      if (getTypeOf(path) === 'string' && getTypeOf(obj) === 'object') {
-        const splitPath = path.split('.').filter((prop) => !!prop);
-        return splitPath.reduce((acc, curr) => acc && acc[curr], obj);
-      }
-      return undefined;
-    };
-
-    mock('getEventData', function(x) {
+    mock('getEventData', function (x) {
       return getFromPath(x, testEvent);
     });
 
-    mock('getTimestampMillis', function() {
-      return 1642397654056;  // '2022-01-17T05:34:14.056Z'
-    });
-    const testTime = '2022-01-17T05:34:14.056Z';
-
-    // Call runCode to run the template's code.a
+    // Call runCode to run the template's code
     runCode(mockData);
 
     // Assert
@@ -1478,171 +1151,94 @@ scenarios:
 
     assertThat(argOptions.method).isStrictlyEqualTo('POST');
     assertThat(argOptions.timeout).isStrictlyEqualTo(5000);
-    assertThat(argOptions.headers['Content-Type']).isStrictlyEqualTo('application/json');
-    assertThat(argOptions.headers.Authorization).isStrictlyEqualTo('Bearer ' + mockData.apiKey);
+    assertThat(argOptions.headers['Content-Type']).isStrictlyEqualTo(
+      'application/json'
+    );
+    assertThat(argOptions.headers.Authorization).isStrictlyEqualTo(
+      'Bearer ' + mockData.apiKey
+    );
 
     const body = jsonApi.parse(argBody);
     const expectedBody = {
-      "attributes":[
+      attributes: [
         {
-          "language":"en-US",
-          "external_id":"tester"
-        }
+          language: 'en-US',
+          external_id: 'tester',
+          email: 'foo@test.io',
+        },
       ],
-      "events":[
+      events: [
         {
-          "name":"foo",
-          "time":testTime,
-          "properties":{
-            "page_location":"http://test.example.com",
-            "page_encoding":"UTF-8",
-            "screen_resolution":"1920x1080",
-            "viewport_size":"1023x980",
-            "self_describing_event_com_acme_test_foo_1":{
-              "foo_age":10
-            },
-            "mobile_context": [
+          name: 'media_player_event',
+          time: testTime,
+          properties: {
+            page_location: 'http://localhost:8000/',
+            page_encoding: 'windows-1252',
+            screen_resolution: '1920x1080',
+            viewport_size: '1044x975',
+            self_describing_event_com_snowplowanalytics_snowplow_media_player_event_1:
+              { type: 'play' },
+            mobile_context: [
               {
-                "osType":"myOsType",
-                "osVersion":"myOsVersion",
-                "deviceManufacturer":"myDevMan",
-                "deviceModel":"myDevModel"
-              }
+                osType: 'myOsType',
+                osVersion: 'myOsVersion',
+                deviceManufacturer: 'myDevMan',
+                deviceModel: 'myDevModel',
+              },
             ],
-            "contexts_com_snowplowanalytics_snowplow_web_page_1": [
+            media_player: [
               {
-                "id":"c000a256-1e13-4cde-a5b4-d7a00cf88003"
-              }
-            ]
+                currentTime: 0.015303093460083008,
+                duration: 190.301,
+                ended: false,
+                loop: false,
+                muted: false,
+                paused: false,
+                playbackRate: 1,
+                volume: 100,
+              },
+            ],
           },
-          "external_id":"tester"
-        }
-      ]
+          external_id: 'tester',
+        },
+      ],
     };
     assertThat(body).isEqualTo(expectedBody);
 - name: Test event property rules
-  code: |-
+  code: |
     const mockData = {
-      "apiEndpoint":"https://test.test",
-      "apiKey":"test",
-      "brazeExternalUserId":"user_id",
-      "includeSelfDescribingEvent":true,
-      "extractFromArray":true,
-      "includeAllEntities":true,
-      "includeCommonEventProperties":false,
-      "eventMappingRules":[
-        {"key":"ip_override","mappedKey":"ip_address"}
-      ],
-      "includeCommonUserProperties":true,
+      apiEndpoint: 'https://test.test',
+      apiKey: 'test',
+      brazeExternalUserId: 'user_id',
+      includeSelfDescribingEvent: true,
+      extractFromArray: true,
+      includeAllEntities: true,
+      includeCommonEventProperties: false,
+      eventMappingRules: [{ key: 'ip_override', mappedKey: 'ip_address' }],
+      includeCommonUserProperties: true,
     };
 
-    const testEvent = {
-      "event_name": "link_click",
-      "client_id":"bc2e92ec6c204a14",
-      "page_hostname":"www.snowplowanalytics.com",
-      "page_location":"http://www.snowplowanalytics.com",
-      "page_path":"/",
-      "page_referrer":"referer",
-      "page_title":"On Analytics",
-      "screen_resolution":"1920x1080",
-      "user_id":"jon.doe",
-      "viewport_size":"745x1302",
-      "origin":"origin",
-      "host":"host",
-      "x-sp-app_id":"angry-birds",
-      "x-sp-platform":"web",
-      "x-sp-etl_tstamp":"2017-01-26T00:01:25.292Z",
-      "x-sp-collector_tstamp":"2013-11-26T00:02:05Z",
-      "x-sp-dvce_created_tstamp":"2013-11-26T00:03:57.885Z",
-      "x-sp-event":"page_view",
-      "x-sp-event_id":"c6ef3124-b53a-4b13-a233-0088f79dcbcb",
-      "x-sp-txn_id":41828,
-      "x-sp-name_tracker":"cloudfront-1",
-      "x-sp-v_tracker":"js-2.1.0",
-      "x-sp-v_collector":"clj-tomcat-0.1.0",
-      "x-sp-v_etl":"serde-0.5.2",
-      "x-sp-user_fingerprint":"2161814971",
-      "x-sp-domain_sessionidx":3,
-      "x-sp-network_userid":"ecdff4d0-9175-40ac-a8bb-325c49733607",
-      "x-sp-geo_country":"US",
-      "x-sp-geo_region":"TX",
-      "x-sp-geo_city":"New York",
-      "x-sp-geo_zipcode":"94109",
-      "x-sp-geo_latitude":37.443604,
-      "x-sp-geo_longitude":-122.4124,
-      "x-sp-geo_location":"37.443604,-122.4124",
-      "x-sp-geo_region_name":"Florida",
-      "x-sp-ip_isp":"FDN Communications",
-      "x-sp-ip_organization":"Bouygues Telecom",
-      "x-sp-ip_domain":"nuvox.net",
-      "x-sp-ip_netspeed":"Cable/DSL",
-      "x-sp-page_urlscheme":"http",
-      "x-sp-page_urlhost":"www.snowplowanalytics.com",
-      "x-sp-page_urlport":80,
-      "x-sp-page_urlpath":"/product/index.html",
-      "x-sp-page_urlquery":"id=GTM-DLRG",
-      "x-sp-page_urlfragment":"4-conclusion",
-      "x-sp-br_features_pdf":true,
-      "x-sp-br_features_flash":false,
-      "x-sp-domain_sessionid":"2b15e5c8-d3b1-11e4-b9d6-1681e6b88ec1",
-      "x-sp-derived_tstamp":"2013-11-26T00:03:57.886Z",
-      "x-sp-event_vendor":"com.snowplowanalytics.snowplow",
-      "x-sp-event_name":"link_click",
-      "x-sp-event_format":"jsonschema",
-      "x-sp-event_version":"1-0-0",
-      "x-sp-event_fingerprint":"e3dbfa9cca0412c3d4052863cefb547f",
-      "x-sp-true_tstamp":"2013-11-26T00:03:57.886Z",
-      "x-sp-self_describing_event_com_snowplowanalytics_snowplow_link_click_1": {
-        "targetUrl":"http://www.example.com",
-        "elementClasses":["foreground"],
-        "elementId":"exampleLink"
-      },
-      "x-sp-contexts_com_snowplowanalytics_snowplow_ua_parser_context_1":[
-        {"useragentFamily":"IE","useragentMajor":"7","useragentMinor":"0","useragentPatch":null,"useragentVersion":"IE 7.0","osFamily":"Windows XP","osMajor":null,"osMinor":null,"osPatch":null,"osPatchMinor":null,"osVersion":"Windows XP","deviceFamily":"Other"}
-      ],
-      "ga_session_id":"2b15e5c8-d3b1-11e4-b9d6-1681e6b88ec1",
-      "ga_session_number":"3",
-      "x-ga-mp2-seg":"1",
-      "x-ga-protocol_version":"2",
-      "ip_override":"1.2.3.4"
-    };
-
-    // Test imports
-    const jsonApi = require('JSON');
-    const getTypeOf = require('getType');
+    const testEvent = mockEventObjectLinkClick;
 
     // to assert on
     let argUrl, argCallback, argOptions, argBody;
 
     // Mocks
-    mock('sendHttpRequest', function() {
+    mock('sendHttpRequest', function () {
       argUrl = arguments[0];
       argOptions = arguments[2];
       argBody = arguments[3];
     });
 
-    mock('getAllEventData', function() {
+    mock('getAllEventData', function () {
       return testEvent;
     });
 
-    const getFromPath = (path, obj) => {
-      if (getTypeOf(path) === 'string' && getTypeOf(obj) === 'object') {
-        const splitPath = path.split('.').filter((prop) => !!prop);
-        return splitPath.reduce((acc, curr) => acc && acc[curr], obj);
-      }
-      return undefined;
-    };
-
-    mock('getEventData', function(x) {
+    mock('getEventData', function (x) {
       return getFromPath(x, testEvent);
     });
 
-    mock('getTimestampMillis', function() {
-      return 1642397654056;  // '2022-01-17T05:34:14.056Z'
-    });
-    const testTime = '2022-01-17T05:34:14.056Z';
-
-    // Call runCode to run the template's code.a
+    // Call runCode to run the template's code.
     runCode(mockData);
 
     // Assert
@@ -1651,152 +1247,98 @@ scenarios:
 
     assertThat(argOptions.method).isStrictlyEqualTo('POST');
     assertThat(argOptions.timeout).isStrictlyEqualTo(5000);
-    assertThat(argOptions.headers['Content-Type']).isStrictlyEqualTo('application/json');
-    assertThat(argOptions.headers.Authorization).isStrictlyEqualTo('Bearer ' + mockData.apiKey);
+    assertThat(argOptions.headers['Content-Type']).isStrictlyEqualTo(
+      'application/json'
+    );
+    assertThat(argOptions.headers.Authorization).isStrictlyEqualTo(
+      'Bearer ' + mockData.apiKey
+    );
 
     const body = jsonApi.parse(argBody);
     const expectedBody = {
-      "attributes":[
+      attributes: [
         {
-          "country":"US",
-          "current_location":{"longitude":-122.4124,"latitude":37.443604},
-          "external_id":"jon.doe"
-        }
+          country: 'US',
+          current_location: { longitude: -122.4124, latitude: 37.443604 },
+          external_id: 'jon.doe',
+        },
       ],
-      "events":[
+      events: [
         {
-          "name":"link_click",
-          "time":testTime,
-          "properties":{
-            "ip_address":"1.2.3.4",
-            "self_describing_event_com_snowplowanalytics_snowplow_link_click_1":{
-              "targetUrl":"http://www.example.com",
-              "elementClasses":["foreground"],
-              "elementId":"exampleLink"
+          name: 'link_click',
+          time: testTime,
+          properties: {
+            ip_address: '1.2.3.4',
+            self_describing_event_com_snowplowanalytics_snowplow_link_click_1: {
+              targetUrl: 'http://www.example.com',
+              elementClasses: ['foreground'],
+              elementId: 'exampleLink',
             },
-            "contexts_com_snowplowanalytics_snowplow_ua_parser_context_1":{
-              "useragentFamily":"IE",
-              "useragentMajor":"7",
-              "useragentMinor":"0",
-              "useragentPatch":null,
-              "useragentVersion":"IE 7.0",
-              "osFamily":"Windows XP",
-              "osMajor":null,
-              "osMinor":null,
-              "osPatch":null,
-              "osPatchMinor":null,
-              "osVersion":"Windows XP",
-              "deviceFamily":"Other"
-            }
+            contexts_com_snowplowanalytics_snowplow_ua_parser_context_1: {
+              useragentFamily: 'IE',
+              useragentMajor: '7',
+              useragentMinor: '0',
+              useragentPatch: null,
+              useragentVersion: 'IE 7.0',
+              osFamily: 'Windows XP',
+              osMajor: null,
+              osMinor: null,
+              osPatch: null,
+              osPatchMinor: null,
+              osVersion: 'Windows XP',
+              deviceFamily: 'Other',
+            },
           },
-          "external_id":"jon.doe"
-        }
-      ]
+          external_id: 'jon.doe',
+        },
+      ],
     };
 
     assertThat(body).isEqualTo(expectedBody);
 - name: Test user property rules
-  code: |-
+  code: |
     const mockData = {
-      "apiEndpoint":"https://test.test",
-      "apiKey":"test",
-      "brazeExternalUserId":"user_id",
-      "includeSelfDescribingEvent":true,
-      "extractFromArray":true,
-      "includeAllEntities":true,
-      "includeCommonEventProperties":false,
-      "includeCommonUserProperties":false,
-      "userMappingRules":[
+      apiEndpoint: 'https://test.test',
+      apiKey: 'test',
+      brazeExternalUserId: 'user_id',
+      includeSelfDescribingEvent: true,
+      extractFromArray: true,
+      includeAllEntities: false,
+      includeCommonEventProperties: false,
+      includeCommonUserProperties: false,
+      userMappingRules: [
         {
-          "key":"x-sp-contexts_com_snowplowanalytics_snowplow_mobile_context_1.0.deviceManufacturer",
-          "mappedKey":"device"
+          key: 'x-sp-contexts_com_snowplowanalytics_snowplow_mobile_context_1.0.deviceManufacturer',
+          mappedKey: 'device',
         },
         {
-          "key":"x-sp-self_describing_event_com_acme_test_foo_1.foo_age",
-          "mappedKey":"user_age"
-        }
+          key: 'x-sp-contexts_com_snowplowanalytics_snowplow_client_session_1.0.userId',
+          mappedKey: 'clientSessionUserId',
+        },
       ],
     };
 
-    const testEvent = {
-      "event_name":"foo",
-      "language":"en-US",
-      "page_encoding":"UTF-8",
-      "page_hostname":"test.example.com",
-      "page_location":"http://test.example.com",
-      "page_path":"/",
-      "screen_resolution":"1920x1080",
-      "user_id":"tester",
-      "viewport_size":"1023x980",
-      "user_agent":"curl/7.74.0",
-      "host":"engineering-sandbox.appspot.com",
-      "x-sp-app_id":"testApp",
-      "x-sp-platform":"srv",
-      "x-sp-dvce_created_tstamp":"1634551546989",
-      "x-sp-name_tracker":"sptest",
-      "x-sp-v_tracker":"curl",
-      "x-sp-domain_sessionidx":1,
-      "x-sp-br_colordepth":"24",
-      "x-sp-br_viewwidth":1023,
-      "x-sp-br_viewheight":980,
-      "x-sp-dvce_screenwidth":1920,
-      "x-sp-dvce_screenheight":1080,
-      "x-sp-doc_charset":"UTF-8",
-      "x-sp-doc_width":1023,
-      "x-sp-doc_height":980,
-      "x-sp-tp2":{"e":"ue","p":"srv","tna":"sptest","aid":"testApp","cs":"UTF-8","lang":"en-US","res":"1920x1080","cd":"24","tz":"Europe/London","dtm":"1634551546989","vp":"1023x980","ds":"1023x980","vid":"1","uid":"tester","url":"http://test.example.com","tv":"curl","ue_pr":"{\"schema\": \"iglu:com.snowplowanalytics.snowplow/unstruct_event/jsonschema/1-0-0\",\"data\":{\"schema\":\"iglu:com.acme.test/foo/jsonschema/1-0-0\",\"data\":{\"foo_age\":10}}}","co":"{\"schema\":\"iglu:com.snowplowanalytics.snowplow/contexts/jsonschema/1-0-0\",\"data\":[{\"schema\":\"iglu:com.snowplowanalytics.snowplow/mobile_context/jsonschema/1-0-2\",\"data\":{\"osType\":\"myOsType\",\"osVersion\":\"myOsVersion\",\"deviceManufacturer\":\"myDevMan\",\"deviceModel\":\"myDevModel\"}},{\"schema\":\"iglu:com.snowplowanalytics.snowplow/web_page/jsonschema/1-0-0\",\"data\":{\"id\":\"c000a256-1e13-4cde-a5b4-d7a00cf88003\"}}]}"},
-      "x-sp-self_describing_event_com_acme_test_foo_1":{
-        "foo_age":10
-      },
-      "x-sp-contexts_com_snowplowanalytics_snowplow_mobile_context_1":[
-        {"osType":"myOsType","osVersion":"myOsVersion","deviceManufacturer":"myDevMan","deviceModel":"myDevModel"}
-      ],
-      "x-sp-contexts_com_snowplowanalytics_snowplow_web_page_1":[
-        {"id":"c000a256-1e13-4cde-a5b4-d7a00cf88003"}
-      ],
-      "ga_session_number":"1",
-      "x-ga-mp2-seg":"1",
-      "x-ga-protocol_version":"2",
-      "x-ga-page_id":"c000a256-1e13-4cde-a5b4-d7a00cf88003",
-      "ip_override":"1.2.3.4"
-    };
-
-    // Test imports
-    const jsonApi = require('JSON');
-    const getTypeOf = require('getType');
+    const testEvent = mockEventObjectSelfDesc;
 
     // to assert on
     let argUrl, argCallback, argOptions, argBody;
 
     // Mocks
-    mock('sendHttpRequest', function() {
+    mock('sendHttpRequest', function () {
       argUrl = arguments[0];
       argOptions = arguments[2];
       argBody = arguments[3];
     });
 
-    mock('getAllEventData', function() {
+    mock('getAllEventData', function () {
       return testEvent;
     });
 
-    const getFromPath = (path, obj) => {
-      if (getTypeOf(path) === 'string' && getTypeOf(obj) === 'object') {
-        const splitPath = path.split('.').filter((prop) => !!prop);
-        return splitPath.reduce((acc, curr) => acc && acc[curr], obj);
-      }
-      return undefined;
-    };
-
-    mock('getEventData', function(x) {
+    mock('getEventData', function (x) {
       return getFromPath(x, testEvent);
     });
 
-    mock('getTimestampMillis', function() {
-      return 1642397654056;  // '2022-01-17T05:34:14.056Z'
-    });
-    const testTime = '2022-01-17T05:34:14.056Z';
-
-    // Call runCode to run the template's code.a
+    // Call runCode to run the template's code
     runCode(mockData);
 
     // Assert
@@ -1805,162 +1347,70 @@ scenarios:
 
     assertThat(argOptions.method).isStrictlyEqualTo('POST');
     assertThat(argOptions.timeout).isStrictlyEqualTo(5000);
-    assertThat(argOptions.headers['Content-Type']).isStrictlyEqualTo('application/json');
-    assertThat(argOptions.headers.Authorization).isStrictlyEqualTo('Bearer ' + mockData.apiKey);
+    assertThat(argOptions.headers['Content-Type']).isStrictlyEqualTo(
+      'application/json'
+    );
+    assertThat(argOptions.headers.Authorization).isStrictlyEqualTo(
+      'Bearer ' + mockData.apiKey
+    );
 
     const body = jsonApi.parse(argBody);
     const expectedBody = {
-      "attributes":[
+      attributes: [
         {
-          "language":"en-US",
-          "user_age":10,
-          "device": "myDevMan",
-          "external_id":"tester"
-        }
+          language: 'en-US',
+          clientSessionUserId: 'fd0e5288-e89b-45df-aad5-6d0c6eda6198',
+          device: 'myDevMan',
+          external_id: 'tester',
+        },
       ],
-      "events":[
+      events: [
         {
-          "name":"foo",
-          "time":testTime,
-          "properties":{
-            "self_describing_event_com_acme_test_foo_1":{
-              "foo_age":10
-            },
-            "contexts_com_snowplowanalytics_snowplow_mobile_context_1":{
-              "osType":"myOsType",
-              "osVersion":"myOsVersion",
-              "deviceManufacturer":"myDevMan",
-              "deviceModel":"myDevModel"
-            },
-            "contexts_com_snowplowanalytics_snowplow_web_page_1":{
-              "id":"c000a256-1e13-4cde-a5b4-d7a00cf88003"
-            }
+          name: 'media_player_event',
+          time: testTime,
+          properties: {
+            self_describing_event_com_snowplowanalytics_snowplow_media_player_event_1:
+              { type: 'play' },
           },
-          "external_id":"tester"
-        }
-      ]
+          external_id: 'tester',
+        },
+      ],
     };
     assertThat(body).isEqualTo(expectedBody);
 - name: Test advanced settings
-  code: |-
+  code: |
     const mockData = {
-      "apiEndpoint":"https://test.test",
-      "apiKey":"test",
-      "brazeExternalUserId":"user_id",
-      "includeSelfDescribingEvent":true,
-      "extractFromArray":true,
-      "includeAllEntities":true,
-      "includeCommonEventProperties":true,
-      "includeCommonUserProperties":true,
-      "timeProp":"x-sp-true_tstamp"
+      apiEndpoint: 'https://test.test',
+      apiKey: 'test',
+      brazeExternalUserId: 'user_id',
+      includeSelfDescribingEvent: true,
+      extractFromArray: true,
+      includeAllEntities: true,
+      includeCommonEventProperties: true,
+      includeCommonUserProperties: true,
+      timeProp: 'x-sp-true_tstamp',
     };
 
-    const testEvent = {
-      "event_name": "link_click",
-      "client_id":"bc2e92ec6c204a14",
-      "page_hostname":"www.snowplowanalytics.com",
-      "page_location":"http://www.snowplowanalytics.com",
-      "page_path":"/",
-      "page_referrer":"referer",
-      "page_title":"On Analytics",
-      "screen_resolution":"1920x1080",
-      "user_id":"jon.doe",
-      "viewport_size":"745x1302",
-      "origin":"origin",
-      "host":"host",
-      "x-sp-app_id":"angry-birds",
-      "x-sp-platform":"web",
-      "x-sp-etl_tstamp":"2017-01-26T00:01:25.292Z",
-      "x-sp-collector_tstamp":"2013-11-26T00:02:05Z",
-      "x-sp-dvce_created_tstamp":"2013-11-26T00:03:57.885Z",
-      "x-sp-event":"page_view",
-      "x-sp-event_id":"c6ef3124-b53a-4b13-a233-0088f79dcbcb",
-      "x-sp-txn_id":41828,
-      "x-sp-name_tracker":"cloudfront-1",
-      "x-sp-v_tracker":"js-2.1.0",
-      "x-sp-v_collector":"clj-tomcat-0.1.0",
-      "x-sp-v_etl":"serde-0.5.2",
-      "x-sp-user_fingerprint":"2161814971",
-      "x-sp-domain_sessionidx":3,
-      "x-sp-network_userid":"ecdff4d0-9175-40ac-a8bb-325c49733607",
-      "x-sp-geo_country":"US",
-      "x-sp-geo_region":"TX",
-      "x-sp-geo_city":"New York",
-      "x-sp-geo_zipcode":"94109",
-      "x-sp-geo_latitude":37.443604,
-      "x-sp-geo_longitude":-122.4124,
-      "x-sp-geo_location":"37.443604,-122.4124",
-      "x-sp-geo_region_name":"Florida",
-      "x-sp-ip_isp":"FDN Communications",
-      "x-sp-ip_organization":"Bouygues Telecom",
-      "x-sp-ip_domain":"nuvox.net",
-      "x-sp-ip_netspeed":"Cable/DSL",
-      "x-sp-page_urlscheme":"http",
-      "x-sp-page_urlhost":"www.snowplowanalytics.com",
-      "x-sp-page_urlport":80,
-      "x-sp-page_urlpath":"/product/index.html",
-      "x-sp-page_urlquery":"id=GTM-DLRG",
-      "x-sp-page_urlfragment":"4-conclusion",
-      "x-sp-br_features_pdf":true,
-      "x-sp-br_features_flash":false,
-      "x-sp-domain_sessionid":"2b15e5c8-d3b1-11e4-b9d6-1681e6b88ec1",
-      "x-sp-derived_tstamp":"2013-11-26T00:03:57.886Z",
-      "x-sp-event_vendor":"com.snowplowanalytics.snowplow",
-      "x-sp-event_name":"link_click",
-      "x-sp-event_format":"jsonschema",
-      "x-sp-event_version":"1-0-0",
-      "x-sp-event_fingerprint":"e3dbfa9cca0412c3d4052863cefb547f",
-      "x-sp-true_tstamp":"2013-11-26T00:03:57.886Z",
-      "x-sp-self_describing_event_com_snowplowanalytics_snowplow_link_click_1": {
-        "targetUrl":"http://www.example.com",
-        "elementClasses":["foreground"],
-        "elementId":"exampleLink"
-      },
-      "x-sp-contexts_com_snowplowanalytics_snowplow_ua_parser_context_1":[
-        {"useragentFamily":"IE","useragentMajor":"7","useragentMinor":"0","useragentPatch":null,"useragentVersion":"IE 7.0","osFamily":"Windows XP","osMajor":null,"osMinor":null,"osPatch":null,"osPatchMinor":null,"osVersion":"Windows XP","deviceFamily":"Other"}
-      ],
-      "ga_session_id":"2b15e5c8-d3b1-11e4-b9d6-1681e6b88ec1",
-      "ga_session_number":"3",
-      "x-ga-mp2-seg":"1",
-      "x-ga-protocol_version":"2",
-      "ip_override":"1.2.3.4"
-    };
-
-    // Test imports
-    const jsonApi = require('JSON');
-    const getTypeOf = require('getType');
-
+    const testEvent = mockEventObjectLinkClick;
     // to assert on
     let argUrl, argCallback, argOptions, argBody;
 
     // Mocks
-    mock('sendHttpRequest', function() {
+    mock('sendHttpRequest', function () {
       argUrl = arguments[0];
       argOptions = arguments[2];
       argBody = arguments[3];
     });
 
-    mock('getAllEventData', function() {
+    mock('getAllEventData', function () {
       return testEvent;
     });
 
-    const getFromPath = (path, obj) => {
-      if (getTypeOf(path) === 'string' && getTypeOf(obj) === 'object') {
-        const splitPath = path.split('.').filter((prop) => !!prop);
-        return splitPath.reduce((acc, curr) => acc && acc[curr], obj);
-      }
-      return undefined;
-    };
-
-    mock('getEventData', function(x) {
+    mock('getEventData', function (x) {
       return getFromPath(x, testEvent);
     });
 
-    mock('getTimestampMillis', function() {
-      return 1642397654056;  // '2022-01-17T05:34:14.056Z'
-    });
-
-    // Call runCode to run the template's code.a
+    // Call runCode to run the template's code.
     runCode(mockData);
 
     // Assert
@@ -1969,57 +1419,422 @@ scenarios:
 
     assertThat(argOptions.method).isStrictlyEqualTo('POST');
     assertThat(argOptions.timeout).isStrictlyEqualTo(5000);
-    assertThat(argOptions.headers['Content-Type']).isStrictlyEqualTo('application/json');
-    assertThat(argOptions.headers.Authorization).isStrictlyEqualTo('Bearer ' + mockData.apiKey);
+    assertThat(argOptions.headers['Content-Type']).isStrictlyEqualTo(
+      'application/json'
+    );
+    assertThat(argOptions.headers.Authorization).isStrictlyEqualTo(
+      'Bearer ' + mockData.apiKey
+    );
 
     const body = jsonApi.parse(argBody);
     const expectedBody = {
-      "attributes":[
+      attributes: [
         {
-          "country":"US",
-          "current_location":{"longitude":-122.4124,"latitude":37.443604},
-          "external_id":"jon.doe"
-        }
+          country: 'US',
+          current_location: { longitude: -122.4124, latitude: 37.443604 },
+          external_id: 'jon.doe',
+        },
       ],
-      "events":[
+      events: [
         {
-          "name":"link_click",
-          "time":"2013-11-26T00:03:57.886Z",  // true_tstamp
-          "properties":{
-            "page_location":"http://www.snowplowanalytics.com",
-            "page_referrer":"referer",
-            "page_title":"On Analytics",
-            "screen_resolution":"1920x1080",
-            "viewport_size":"745x1302",
-            "self_describing_event_com_snowplowanalytics_snowplow_link_click_1":{
-              "targetUrl":"http://www.example.com",
-              "elementClasses":["foreground"],
-              "elementId":"exampleLink"
+          name: 'link_click',
+          time: '2013-11-26T00:03:57.886Z', // true_tstamp
+          properties: {
+            page_location: 'http://www.snowplowanalytics.com',
+            page_referrer: 'referer',
+            page_title: 'On Analytics',
+            screen_resolution: '1920x1080',
+            viewport_size: '745x1302',
+            self_describing_event_com_snowplowanalytics_snowplow_link_click_1: {
+              targetUrl: 'http://www.example.com',
+              elementClasses: ['foreground'],
+              elementId: 'exampleLink',
             },
-            "contexts_com_snowplowanalytics_snowplow_ua_parser_context_1":{
-              "useragentFamily":"IE",
-              "useragentMajor":"7",
-              "useragentMinor":"0",
-              "useragentPatch":null,
-              "useragentVersion":"IE 7.0",
-              "osFamily":"Windows XP",
-              "osMajor":null,
-              "osMinor":null,
-              "osPatch":null,
-              "osPatchMinor":null,
-              "osVersion":"Windows XP",
-              "deviceFamily":"Other"
-            }
+            contexts_com_snowplowanalytics_snowplow_ua_parser_context_1: {
+              useragentFamily: 'IE',
+              useragentMajor: '7',
+              useragentMinor: '0',
+              useragentPatch: null,
+              useragentVersion: 'IE 7.0',
+              osFamily: 'Windows XP',
+              osMajor: null,
+              osMinor: null,
+              osPatch: null,
+              osPatchMinor: null,
+              osVersion: 'Windows XP',
+              deviceFamily: 'Other',
+            },
           },
-          "external_id":"jon.doe"
-        }
-      ]
+          external_id: 'jon.doe',
+        },
+      ],
     };
     assertThat(body).isEqualTo(expectedBody);
+setup: |-
+  const jsonApi = require('JSON');
+  const getTypeOf = require('getType');
+
+  const mockEventObjectPageView = {
+    event_name: 'page_view',
+    client_id: 'd54a1904-7798-401a-be0b-1a83bea73634',
+    user_id: 'snow123',
+    language: 'en-GB',
+    page_encoding: 'UTF-8',
+    page_hostname: 'snowplowanalytics.com',
+    page_location: 'https://snowplowanalytics.com/',
+    page_path: '/',
+    page_referrer: 'referer',
+    page_title:
+      'Collect, manage and operationalize behavioral data at scale | Snowplow',
+    screen_resolution: '1920x1080',
+    viewport_size: '745x1302',
+    user_agent: 'user-agent',
+    origin: 'origin',
+    host: 'host',
+    'x-sp-app_id': 'website',
+    'x-sp-platform': 'web',
+    'x-sp-dvce_created_tstamp': '1628586512246',
+    'x-sp-event_id': '8676de79-0eba-4435-ad95-8a41a8a0129c',
+    'x-sp-name_tracker': 'sp',
+    'x-sp-v_tracker': 'js-2.18.1',
+    'x-sp-domain_sessionid': 'e7580b71-227b-4868-9ea9-322a263ce885',
+    'x-sp-domain_sessionidx': 1,
+    'x-sp-br_cookies': '1',
+    'x-sp-br_colordepth': '24',
+    'x-sp-br_viewwidth': 745,
+    'x-sp-br_viewheight': 1302,
+    'x-sp-dvce_screenwidth': 1920,
+    'x-sp-dvce_screenheight': 1080,
+    'x-sp-doc_charset': 'UTF-8',
+    'x-sp-doc_width': 730,
+    'x-sp-doc_height': 12393,
+    'x-sp-dvce_sent_tstamp': '1628586512248',
+    'x-sp-contexts_com_snowplowanalytics_snowplow_web_page_1': [
+      {
+        id: 'a86c42e5-b831-45c8-b706-e214c26b4b3d',
+      },
+    ],
+    'x-sp-contexts_org_w3_performance_timing_1': [
+      {
+        navigationStart: 1628586508610,
+        unloadEventStart: 0,
+        unloadEventEnd: 0,
+        redirectStart: 0,
+        redirectEnd: 0,
+        fetchStart: 1628586508610,
+        domainLookupStart: 1628586508637,
+        domainLookupEnd: 1628586508691,
+        connectStart: 1628586508691,
+        connectEnd: 1628586508763,
+        secureConnectionStart: 1628586508721,
+        requestStart: 1628586508763,
+        responseStart: 1628586508797,
+        responseEnd: 1628586508821,
+        domLoading: 1628586509076,
+        domInteractive: 1628586509381,
+        domContentLoadedEventStart: 1628586509408,
+        domContentLoadedEventEnd: 1628586509417,
+        domComplete: 1628586510332,
+        loadEventStart: 1628586510332,
+        loadEventEnd: 1628586510334,
+      },
+    ],
+    'x-sp-contexts_com_google_tag-manager_server-side_user_data_1': [
+      {
+        email_address: 'foo@example.com',
+        phone_number: '+15551234567',
+        address: {
+          first_name: 'Jane',
+          last_name: 'Doe',
+          street: '123 Fake St',
+          city: 'San Francisco',
+          region: 'CA',
+          postal_code: '94016',
+          country: 'US',
+        },
+      },
+    ],
+    user_data: {
+      email_address: 'foo@example.com',
+      phone_number: '+15551234567',
+      address: {
+        first_name: 'Jane',
+        last_name: 'Doe',
+        street: '123 Fake St',
+        city: 'San Francisco',
+        region: 'CA',
+        postal_code: '94016',
+        country: 'US',
+      },
+    },
+    ga_session_id: 'e7580b71-227b-4868-9ea9-322a263ce885',
+    ga_session_number: '1',
+    'x-ga-mp2-seg': '1',
+    'x-ga-protocol_version': '2',
+    'x-ga-page_id': 'a86c42e5-b831-45c8-b706-e214c26b4b3d',
+    ip_override: '1.2.3.4',
+  };
+  const mockEventObjectLinkClick = {
+    event_name: 'link_click',
+    client_id: 'bc2e92ec6c204a14',
+    page_hostname: 'www.snowplowanalytics.com',
+    page_location: 'http://www.snowplowanalytics.com',
+    page_path: '/',
+    page_referrer: 'referer',
+    page_title: 'On Analytics',
+    screen_resolution: '1920x1080',
+    user_id: 'jon.doe',
+    viewport_size: '745x1302',
+    origin: 'origin',
+    host: 'host',
+    'x-sp-app_id': 'angry-birds',
+    'x-sp-platform': 'web',
+    'x-sp-etl_tstamp': '2017-01-26T00:01:25.292Z',
+    'x-sp-collector_tstamp': '2013-11-26T00:02:05Z',
+    'x-sp-dvce_created_tstamp': '2013-11-26T00:03:57.885Z',
+    'x-sp-event': 'page_view',
+    'x-sp-event_id': 'c6ef3124-b53a-4b13-a233-0088f79dcbcb',
+    'x-sp-txn_id': 41828,
+    'x-sp-name_tracker': 'cloudfront-1',
+    'x-sp-v_tracker': 'js-2.1.0',
+    'x-sp-v_collector': 'clj-tomcat-0.1.0',
+    'x-sp-v_etl': 'serde-0.5.2',
+    'x-sp-user_fingerprint': '2161814971',
+    'x-sp-domain_sessionidx': 3,
+    'x-sp-network_userid': 'ecdff4d0-9175-40ac-a8bb-325c49733607',
+    'x-sp-geo_country': 'US',
+    'x-sp-geo_region': 'TX',
+    'x-sp-geo_city': 'New York',
+    'x-sp-geo_zipcode': '94109',
+    'x-sp-geo_latitude': 37.443604,
+    'x-sp-geo_longitude': -122.4124,
+    'x-sp-geo_location': '37.443604,-122.4124',
+    'x-sp-geo_region_name': 'Florida',
+    'x-sp-ip_isp': 'FDN Communications',
+    'x-sp-ip_organization': 'Bouygues Telecom',
+    'x-sp-ip_domain': 'nuvox.net',
+    'x-sp-ip_netspeed': 'Cable/DSL',
+    'x-sp-page_urlscheme': 'http',
+    'x-sp-page_urlhost': 'www.snowplowanalytics.com',
+    'x-sp-page_urlport': 80,
+    'x-sp-page_urlpath': '/product/index.html',
+    'x-sp-page_urlquery': 'id=GTM-DLRG',
+    'x-sp-page_urlfragment': '4-conclusion',
+    'x-sp-br_features_pdf': true,
+    'x-sp-br_features_flash': false,
+    'x-sp-domain_sessionid': '2b15e5c8-d3b1-11e4-b9d6-1681e6b88ec1',
+    'x-sp-derived_tstamp': '2013-11-26T00:03:57.886Z',
+    'x-sp-event_vendor': 'com.snowplowanalytics.snowplow',
+    'x-sp-event_name': 'link_click',
+    'x-sp-event_format': 'jsonschema',
+    'x-sp-event_version': '1-0-0',
+    'x-sp-event_fingerprint': 'e3dbfa9cca0412c3d4052863cefb547f',
+    'x-sp-true_tstamp': '2013-11-26T00:03:57.886Z',
+    'x-sp-self_describing_event_com_snowplowanalytics_snowplow_link_click_1': {
+      targetUrl: 'http://www.example.com',
+      elementClasses: ['foreground'],
+      elementId: 'exampleLink',
+    },
+    'x-sp-contexts_com_snowplowanalytics_snowplow_ua_parser_context_1': [
+      {
+        useragentFamily: 'IE',
+        useragentMajor: '7',
+        useragentMinor: '0',
+        useragentPatch: null,
+        useragentVersion: 'IE 7.0',
+        osFamily: 'Windows XP',
+        osMajor: null,
+        osMinor: null,
+        osPatch: null,
+        osPatchMinor: null,
+        osVersion: 'Windows XP',
+        deviceFamily: 'Other',
+      },
+    ],
+    ga_session_id: '2b15e5c8-d3b1-11e4-b9d6-1681e6b88ec1',
+    ga_session_number: '3',
+    'x-ga-mp2-seg': '1',
+    'x-ga-protocol_version': '2',
+    ip_override: '1.2.3.4',
+  };
+  const mockEventObjectSelfDesc = {
+    event_name: 'media_player_event',
+    client_id: 'fd0e5288-e89b-45df-aad5-6d0c6eda6198',
+    language: 'en-US',
+    page_encoding: 'windows-1252',
+    page_hostname: 'localhost',
+    page_location: 'http://localhost:8000/',
+    page_path: '/',
+    screen_resolution: '1920x1080',
+    user_id: 'tester',
+    viewport_size: '1044x975',
+    user_agent: 'curl/7.81.0',
+    host: 'host',
+    'x-sp-app_id': 'media-test',
+    'x-sp-platform': 'web',
+    'x-sp-dvce_created_tstamp': '1658567928426',
+    'x-sp-event_id': 'c2084e30-5e4f-4d9c-86b2-e0bc3781509a',
+    'x-sp-name_tracker': 'spTest',
+    'x-sp-v_tracker': 'js-3.5.0',
+    'x-sp-domain_sessionid': '1ab28b79-bfdd-4855-9bf1-5199ce15beac',
+    'x-sp-domain_sessionidx': 1,
+    'x-sp-br_cookies': '1',
+    'x-sp-br_colordepth': '24',
+    'x-sp-br_viewwidth': 1044,
+    'x-sp-br_viewheight': 975,
+    'x-sp-dvce_screenwidth': 1920,
+    'x-sp-dvce_screenheight': 1080,
+    'x-sp-doc_charset': 'windows-1252',
+    'x-sp-doc_width': 1044,
+    'x-sp-doc_height': 975,
+    'x-sp-dvce_sent_tstamp': '1658567928427',
+    'x-sp-self_describing_event_com_snowplowanalytics_snowplow_media_player_event_1':
+      { type: 'play' },
+    'x-sp-contexts_com_snowplowanalytics_snowplow_mobile_context_1': [
+      {
+        osType: 'myOsType',
+        osVersion: 'myOsVersion',
+        deviceManufacturer: 'myDevMan',
+        deviceModel: 'myDevModel',
+      },
+    ],
+    'x-sp-contexts_com_youtube_youtube_1': [
+      {
+        autoPlay: false,
+        avaliablePlaybackRates: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+        buffering: false,
+        controls: true,
+        cued: false,
+        loaded: 3,
+        playbackQuality: 'medium',
+        playerId: 'youtube-song',
+        unstarted: false,
+        url: 'https://www.youtube.com/watch?v=foobarbaz',
+        avaliableQualityLevels: [
+          'hd1080',
+          'hd720',
+          'large',
+          'medium',
+          'small',
+          'tiny',
+          'auto',
+        ],
+      },
+    ],
+    'x-sp-contexts_com_snowplowanalytics_snowplow_media_player_1': [
+      {
+        currentTime: 0.015303093460083008,
+        duration: 190.301,
+        ended: false,
+        loop: false,
+        muted: false,
+        paused: false,
+        playbackRate: 1,
+        volume: 100,
+      },
+    ],
+    'x-sp-contexts_com_snowplowanalytics_snowplow_web_page_1': [
+      { id: '68027aa2-34b1-4018-95e3-7176c62dbc84' },
+    ],
+    'x-sp-contexts_com_google_tag-manager_server-side_user_data_1': [
+      { email_address: 'foo@test.io' },
+    ],
+    'x-sp-contexts_com_snowplowanalytics_snowplow_client_session_1': [
+      {
+        userId: 'fd0e5288-e89b-45df-aad5-6d0c6eda6198',
+        sessionId: '1ab28b79-bfdd-4855-9bf1-5199ce15beac',
+        eventIndex: 24,
+        sessionIndex: 1,
+        previousSessionId: null,
+        storageMechanism: 'COOKIE_1',
+        firstEventId: '40fbdb30-1b99-42a3-99f7-850dacf5be43',
+        firstEventTimestamp: '2022-07-23T09:08:04.451Z',
+      },
+    ],
+    'x-sp-contexts': [
+      {
+        schema: 'iglu:com.youtube/youtube/jsonschema/1-0-0',
+        data: {
+          autoPlay: false,
+          avaliablePlaybackRates: [0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2],
+          buffering: false,
+          controls: true,
+          cued: false,
+          loaded: 3,
+          playbackQuality: 'medium',
+          playerId: 'youtube-song',
+          unstarted: false,
+          url: 'https://www.youtube.com/watch?v=foobarbaz',
+          avaliableQualityLevels: [
+            'hd1080',
+            'hd720',
+            'large',
+            'medium',
+            'small',
+            'tiny',
+            'auto',
+          ],
+        },
+      },
+      {
+        schema:
+          'iglu:com.snowplowanalytics.snowplow/media_player/jsonschema/1-0-0',
+        data: {
+          currentTime: 0.015303093460083008,
+          duration: 190.301,
+          ended: false,
+          loop: false,
+          muted: false,
+          paused: false,
+          playbackRate: 1,
+          volume: 100,
+        },
+      },
+      {
+        schema: 'iglu:com.snowplowanalytics.snowplow/web_page/jsonschema/1-0-0',
+        data: { id: '68027aa2-34b1-4018-95e3-7176c62dbc84' },
+      },
+      {
+        schema:
+          'iglu:com.google.tag-manager.server-side/user_data/jsonschema/1-0-0',
+        data: { email_address: 'foo@test.io' },
+      },
+      {
+        schema:
+          'iglu:com.snowplowanalytics.snowplow/client_session/jsonschema/1-0-2',
+        data: {
+          userId: 'fd0e5288-e89b-45df-aad5-6d0c6eda6198',
+          sessionId: '1ab28b79-bfdd-4855-9bf1-5199ce15beac',
+          eventIndex: 24,
+          sessionIndex: 1,
+          previousSessionId: null,
+          storageMechanism: 'COOKIE_1',
+          firstEventId: '40fbdb30-1b99-42a3-99f7-850dacf5be43',
+          firstEventTimestamp: '2022-07-23T09:08:04.451Z',
+        },
+      },
+    ],
+    user_data: { email_address: 'foo@test.io' },
+    ga_session_id: '1ab28b79-bfdd-4855-9bf1-5199ce15beac',
+    ga_session_number: '1',
+    'x-ga-mp2-seg': '1',
+    'x-ga-protocol_version': '2',
+    'x-ga-page_id': '68027aa2-34b1-4018-95e3-7176c62dbc84',
+  };
+  // Helper for mocking
+  const getFromPath = (path, obj) => {
+    if (getTypeOf(path) === 'string' && getTypeOf(obj) === 'object') {
+      const splitPath = path.split('.').filter((prop) => !!prop);
+      return splitPath.reduce((acc, curr) => acc && acc[curr], obj);
+    }
+    return undefined;
+  };
+  mock('getTimestampMillis', function () {
+    return 1662403196056; // '2022-09-05T18:39:56.056Z'
+  });
+  const testTime = '2022-09-05T18:39:56.056Z';
 
 
 ___NOTES___
 
 Created on 12/27/2021, 2:18:32 PM
-
-
