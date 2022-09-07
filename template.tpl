@@ -1516,7 +1516,7 @@ scenarios:
           name: 'page_view',
           time: testTime,
           properties: {
-            page_location: 'https://snowplowanalytics.com/',
+            page_location: 'https://snowplow.io/',
             page_encoding: 'UTF-8',
             page_referrer: 'referer',
             page_title:
@@ -1601,7 +1601,7 @@ scenarios:
           name: 'link_click',
           time: testTime,
           properties: {
-            page_location: 'http://www.snowplowanalytics.com',
+            page_location: 'http://www.snowplow.io',
             page_referrer: 'referer',
             page_title: 'On Analytics',
             screen_resolution: '1920x1080',
@@ -2777,7 +2777,7 @@ scenarios:
           name: 'link_click',
           time: '2013-11-26T00:03:57.886Z', // true_tstamp
           properties: {
-            page_location: 'http://www.snowplowanalytics.com',
+            page_location: 'http://www.snowplow.io',
             page_referrer: 'referer',
             page_title: 'On Analytics',
             screen_resolution: '1920x1080',
@@ -2898,7 +2898,7 @@ scenarios:
           name: 'page_view',
           time: testTime,
           properties: {
-            page_location: 'https://snowplowanalytics.com/',
+            page_location: 'https://snowplow.io/',
             page_encoding: 'UTF-8',
             page_referrer: 'referer',
             page_title:
@@ -2991,8 +2991,8 @@ setup: |-
     user_id: 'snow123',
     language: 'en-GB',
     page_encoding: 'UTF-8',
-    page_hostname: 'snowplowanalytics.com',
-    page_location: 'https://snowplowanalytics.com/',
+    page_hostname: 'snowplow.io',
+    page_location: 'https://snowplow.io/',
     page_path: '/',
     page_referrer: 'referer',
     page_title:
@@ -3088,8 +3088,8 @@ setup: |-
   const mockEventObjectLinkClick = {
     event_name: 'link_click',
     client_id: 'bc2e92ec6c204a14',
-    page_hostname: 'www.snowplowanalytics.com',
-    page_location: 'http://www.snowplowanalytics.com',
+    page_hostname: 'www.snowplow.io',
+    page_location: 'http://www.snowplow.io',
     page_path: '/',
     page_referrer: 'referer',
     page_title: 'On Analytics',
@@ -3126,7 +3126,7 @@ setup: |-
     'x-sp-ip_domain': 'nuvox.net',
     'x-sp-ip_netspeed': 'Cable/DSL',
     'x-sp-page_urlscheme': 'http',
-    'x-sp-page_urlhost': 'www.snowplowanalytics.com',
+    'x-sp-page_urlhost': 'www.snowplow.io',
     'x-sp-page_urlport': 80,
     'x-sp-page_urlpath': '/product/index.html',
     'x-sp-page_urlquery': 'id=GTM-DLRG',
