@@ -56,22 +56,197 @@ ___TEMPLATE_PARAMETERS___
   },
   {
     "type": "GROUP",
-    "name": "brazeIdentifier",
+    "name": "brazeIdentifierGroup",
     "displayName": "Identity settings",
     "groupStyle": "ZIPPY_OPEN",
     "subParams": [
       {
-        "type": "TEXT",
-        "name": "brazeExternalUserId",
-        "displayName": "Braze external_id",
+        "type": "SELECT",
+        "name": "brazeIdentifier",
+        "displayName": "Braze User Identifier",
+        "macrosInSelect": false,
+        "selectItems": [
+          {
+            "value": "external_id",
+            "displayValue": "external_id"
+          },
+          {
+            "value": "user_alias",
+            "displayValue": "user alias object"
+          }
+        ],
         "simpleValueType": true,
-        "help": "Specify the client event property (e.g. client_id) that corresponds to the `external_id` user identifier for Braze API.",
         "valueValidators": [
           {
             "type": "NON_EMPTY"
           }
         ],
+        "help": "",
+        "defaultValue": "external_id",
         "alwaysInSummary": true
+      },
+      {
+        "type": "GROUP",
+        "name": "brazeExternalId",
+        "displayName": "Braze External Id",
+        "groupStyle": "ZIPPY_OPEN",
+        "subParams": [
+          {
+            "type": "SELECT",
+            "name": "interpretExternalUserId",
+            "displayName": "Set external_id from:",
+            "macrosInSelect": false,
+            "selectItems": [
+              {
+                "value": "asValue",
+                "displayValue": "Value"
+              },
+              {
+                "value": "asEventProperty",
+                "displayValue": "Event Property"
+              }
+            ],
+            "simpleValueType": true,
+            "valueValidators": [
+              {
+                "type": "NON_EMPTY"
+              }
+            ],
+            "help": "Use this option to select how you want to set the `external_id`, either from the Event Property you specify or directly from the Value you provide.",
+            "defaultValue": "asEventProperty"
+          },
+          {
+            "type": "TEXT",
+            "name": "externalUserId",
+            "displayName": "external_id",
+            "simpleValueType": true,
+            "help": "Specify the value or the client event property (e.g. client_id) that corresponds to the `external_id` user identifier for Braze API.",
+            "valueValidators": [
+              {
+                "type": "NON_EMPTY"
+              }
+            ],
+            "alwaysInSummary": false
+          }
+        ],
+        "enablingConditions": [
+          {
+            "paramName": "brazeIdentifier",
+            "paramValue": "external_id",
+            "type": "EQUALS"
+          }
+        ]
+      },
+      {
+        "type": "GROUP",
+        "name": "brazeUserAlias",
+        "displayName": "Braze User Alias Object",
+        "groupStyle": "ZIPPY_OPEN",
+        "subParams": [
+          {
+            "type": "CHECKBOX",
+            "name": "updateExistingOnly",
+            "checkboxText": "Update existing users only",
+            "simpleValueType": true,
+            "help": "When checked, this option will only update existing users. Uncheck this box to allow creating alias-only users.",
+            "defaultValue": true
+          },
+          {
+            "type": "GROUP",
+            "name": "aliasNameGroup",
+            "displayName": "User Alias Name",
+            "groupStyle": "ZIPPY_OPEN",
+            "subParams": [
+              {
+                "type": "SELECT",
+                "name": "interpretAliasName",
+                "displayName": "Set user alias name from:",
+                "macrosInSelect": false,
+                "selectItems": [
+                  {
+                    "value": "asValue",
+                    "displayValue": "Value"
+                  },
+                  {
+                    "value": "asEventProperty",
+                    "displayValue": "Event Property"
+                  }
+                ],
+                "simpleValueType": true,
+                "valueValidators": [
+                  {
+                    "type": "NON_EMPTY"
+                  }
+                ],
+                "help": "Use this option to select how you want to set the `alias_name`, either from the Event Property you specify or directly from the Value you provide.",
+                "defaultValue": "asEventProperty"
+              },
+              {
+                "type": "TEXT",
+                "name": "aliasName",
+                "displayName": "Alias Name",
+                "simpleValueType": true,
+                "valueValidators": [
+                  {
+                    "type": "NON_EMPTY"
+                  }
+                ],
+                "help": "Specify the value or the client event property (e.g. client_id) that corresponds to the `alias_name` of the user alias object for Braze API."
+              }
+            ]
+          },
+          {
+            "type": "GROUP",
+            "name": "aliasLabelGroup",
+            "displayName": "User Alias Label",
+            "groupStyle": "ZIPPY_OPEN",
+            "subParams": [
+              {
+                "type": "SELECT",
+                "name": "interpretAliasLabel",
+                "displayName": "Set user alias label from:",
+                "macrosInSelect": false,
+                "selectItems": [
+                  {
+                    "value": "asValue",
+                    "displayValue": "Value"
+                  },
+                  {
+                    "value": "asEventProperty",
+                    "displayValue": "Event Property"
+                  }
+                ],
+                "simpleValueType": true,
+                "valueValidators": [
+                  {
+                    "type": "NON_EMPTY"
+                  }
+                ],
+                "help": "Use this option to select how you want to set the `alias_label`, either from the Event Property you specify or directly from the Value you provide.",
+                "defaultValue": "asEventProperty"
+              },
+              {
+                "type": "TEXT",
+                "name": "aliasLabel",
+                "displayName": "Alias Label",
+                "simpleValueType": true,
+                "valueValidators": [
+                  {
+                    "type": "NON_EMPTY"
+                  }
+                ],
+                "help": "Specify the value or the client event property that corresponds to the `alias_label` of the user alias object for Braze API."
+              }
+            ]
+          }
+        ],
+        "enablingConditions": [
+          {
+            "paramName": "brazeIdentifier",
+            "paramValue": "user_alias",
+            "type": "EQUALS"
+          }
+        ]
       }
     ]
   },
@@ -908,13 +1083,77 @@ const mkEventProperties = (evData, tagConfig) => {
 };
 
 /*
- * Sets the `external_id` property to idValue in obj.
+ * Helper function to allow interpreting a value as an event property.
  */
-const addId = (obj, idValue) => {
-  const idKey = 'external_id';
-  obj[idKey] = idValue;
+const makeValue = (interpret, value) => {
+  if (interpret === 'asEventProperty') {
+    return getEventData(value);
+  }
+  return value;
+};
 
-  return obj;
+/*
+ * Constructs the braze identifier (external_id string or user_alias object).
+ * See also: https://www.braze.com/docs/api/objects_filters/user_alias_object
+ */
+const mkBrazeIdentifier = (tagConfig) => {
+  switch (tagConfig.brazeIdentifier) {
+    case 'external_id':
+      return makeValue(
+        tagConfig.interpretExternalUserId,
+        tagConfig.externalUserId
+      );
+    case 'user_alias':
+      return {
+        alias_name: makeValue(
+          tagConfig.interpretAliasName,
+          tagConfig.aliasName
+        ),
+        alias_label: makeValue(
+          tagConfig.interpretAliasLabel,
+          tagConfig.aliasLabel
+        ),
+      };
+    default:
+      // based on validation rules this should not happen
+      // still, returning undefined which should fail by BrazeAPI
+      return undefined;
+  }
+};
+
+/*
+ * Returns a function that
+ *   accepts an object as argument,
+ *   adds the correct Braze user identifier to that object (side effects)
+ *   and returns it.
+ */
+const idAdder = (tagConfig) => {
+  // mapping configuration fields to Braze identifiers
+  const identifiersMap = {
+    external_id: 'external_id',
+    user_alias: 'user_alias',
+  };
+
+  const idKey = identifiersMap[tagConfig.brazeIdentifier];
+  const idValue = mkBrazeIdentifier(tagConfig);
+  if (!idKey) {
+    return (obj) => obj;
+  }
+
+  if (idKey === 'user_alias') {
+    const updateOnlyKey = '_update_existing_only';
+    const updateOnlyValue = !!tagConfig.updateExistingOnly;
+    return (obj) => {
+      obj[idKey] = idValue;
+      obj[updateOnlyKey] = updateOnlyValue;
+      return obj;
+    };
+  }
+
+  return (obj) => {
+    obj[idKey] = idValue;
+    return obj;
+  };
 };
 
 /*
@@ -961,10 +1200,10 @@ const mkBrazePayload = (evData, tagConfig) => {
     userAttrs
   );
 
-  const userid = getEventData(tagConfig.brazeExternalUserId);
+  const addId = idAdder(tagConfig);
   const requestPayload = {
-    attributes: isEmpty(userAttrs) ? undefined : [addId(userAttrs, userid)],
-    events: [addId(eventObject, userid)],
+    attributes: isEmpty(userAttrs) ? undefined : [addId(userAttrs)],
+    events: [addId(eventObject)],
   };
 
   return cleanObject(requestPayload);
@@ -1189,7 +1428,9 @@ scenarios:
     const mockData = {
       apiEndpoint: 'https://test.test',
       apiKey: 'test',
-      brazeExternalUserId: 'user_id',
+      brazeIdentifier: 'external_id',
+      interpretExternalUserId: 'asEventProperty',
+      externalUserId: 'user_id',
       includeSelfDescribingEvent: true,
       extractFromArray: true,
       includeEntities: 'all',
@@ -1332,7 +1573,9 @@ scenarios:
     const mockData = {
       apiEndpoint: 'https://test.test',
       apiKey: 'test',
-      brazeExternalUserId: 'x-sp-network_userid',
+      brazeIdentifier: 'external_id',
+      interpretExternalUserId: 'asValue', // test also 'asValue' for 'external_id'
+      externalUserId: 'someIdValue',
       includeSelfDescribingEvent: true,
       extractFromArray: false,
       includeEntities: 'none',
@@ -1350,7 +1593,7 @@ scenarios:
             longitude: -122.4124,
             latitude: 37.443604,
           },
-          external_id: 'ecdff4d0-9175-40ac-a8bb-325c49733607',
+          external_id: 'someIdValue',
         },
       ],
       events: [
@@ -1369,7 +1612,7 @@ scenarios:
               elementId: 'exampleLink',
             },
           },
-          external_id: 'ecdff4d0-9175-40ac-a8bb-325c49733607',
+          external_id: 'someIdValue',
         },
       ],
     };
@@ -1434,8 +1677,13 @@ scenarios:
     const mockData = {
       apiEndpoint: 'https://test.test',
       apiKey: 'test',
-      brazeExternalUserId:
+      brazeIdentifier: 'user_alias', // test also user_alias
+      updateExistingOnly: true,
+      interpretAliasName: 'asEventProperty',
+      aliasName:
         'x-sp-contexts_com_snowplowanalytics_snowplow_client_session_1.0.userId',
+      interpretAliasLabel: 'asEventProperty',
+      aliasLabel: 'x-sp-app_id',
       includeSelfDescribingEvent: false,
       extractFromArray: true,
       includeEntities: 'all',
@@ -1481,7 +1729,11 @@ scenarios:
             deviceManufacturer: 'myDevMan',
             deviceModel: 'myDevModel',
           },
-          external_id: 'fd0e5288-e89b-45df-aad5-6d0c6eda6198',
+          user_alias: {
+            alias_name: 'fd0e5288-e89b-45df-aad5-6d0c6eda6198',
+            alias_label: 'media-test',
+          },
+          _update_existing_only: true,
           email: 'foo@test.io',
           user_data_by_rule: {
             email_address: 'foo@test.io',
@@ -1542,7 +1794,11 @@ scenarios:
               firstEventTimestamp: '2022-07-23T09:08:04.451Z',
             },
           },
-          external_id: 'fd0e5288-e89b-45df-aad5-6d0c6eda6198',
+          user_alias: {
+            alias_name: 'fd0e5288-e89b-45df-aad5-6d0c6eda6198',
+            alias_label: 'media-test',
+          },
+          _update_existing_only: true,
         },
       ],
     };
@@ -1607,7 +1863,12 @@ scenarios:
     const mockData = {
       apiEndpoint: 'https://test.test',
       apiKey: 'test',
-      brazeExternalUserId: 'user_id',
+      brazeIdentifier: 'user_alias', // test also user_alias
+      updateExistingOnly: false,
+      interpretAliasName: 'asValue',
+      aliasName: 'someAliasName',
+      interpretAliasLabel: 'asValue',
+      aliasLabel: 'someAliasLabel',
       includeSelfDescribingEvent: false,
       extractFromArray: true,
       includeEntities: 'none',
@@ -1641,7 +1902,11 @@ scenarios:
       attributes: [
         {
           language: 'en-US',
-          external_id: 'tester',
+          user_alias: {
+            alias_name: 'someAliasName',
+            alias_label: 'someAliasLabel',
+          },
+          _update_existing_only: false,
           user_data: {
             email_address: 'foo@test.io',
           },
@@ -1684,7 +1949,11 @@ scenarios:
               volume: 100,
             },
           },
-          external_id: 'tester',
+          user_alias: {
+            alias_name: 'someAliasName',
+            alias_label: 'someAliasLabel',
+          },
+          _update_existing_only: false,
         },
       ],
     };
@@ -1749,7 +2018,9 @@ scenarios:
     const mockData = {
       apiEndpoint: 'https://test.test',
       apiKey: 'test',
-      brazeExternalUserId: 'user_id',
+      brazeIdentifier: 'external_id',
+      interpretExternalUserId: 'asEventProperty',
+      externalUserId: 'user_id',
       includeSelfDescribingEvent: false,
       extractFromArray: true,
       includeEntities: 'all',
@@ -1905,7 +2176,9 @@ scenarios:
     const mockData = {
       apiEndpoint: 'https://test.test',
       apiKey: 'test',
-      brazeExternalUserId: 'user_id',
+      brazeIdentifier: 'external_id',
+      interpretExternalUserId: 'asEventProperty',
+      externalUserId: 'user_id',
       includeSelfDescribingEvent: false,
       extractFromArray: true,
       includeEntities: 'all',
@@ -2044,7 +2317,9 @@ scenarios:
     const mockData = {
       apiEndpoint: 'https://test.test',
       apiKey: 'test',
-      brazeExternalUserId: 'user_id',
+      brazeIdentifier: 'external_id',
+      interpretExternalUserId: 'asEventProperty',
+      externalUserId: 'user_id',
       includeSelfDescribingEvent: false,
       extractFromArray: true,
       includeEntities: 'all',
@@ -2204,7 +2479,9 @@ scenarios:
     const mockData = {
       apiEndpoint: 'https://test.test',
       apiKey: 'test',
-      brazeExternalUserId: 'user_id',
+      brazeIdentifier: 'external_id',
+      interpretExternalUserId: 'asEventProperty',
+      externalUserId: 'user_id',
       includeSelfDescribingEvent: true,
       extractFromArray: true,
       includeEntities: 'all',
@@ -2315,7 +2592,9 @@ scenarios:
     const mockData = {
       apiEndpoint: 'https://test.test',
       apiKey: 'test',
-      brazeExternalUserId: 'user_id',
+      brazeIdentifier: 'external_id',
+      interpretExternalUserId: 'asEventProperty',
+      externalUserId: 'user_id',
       includeSelfDescribingEvent: true,
       extractFromArray: true,
       includeEntities: 'none',
@@ -2417,7 +2696,9 @@ scenarios:
     const mockData = {
       apiEndpoint: 'https://test.test',
       apiKey: 'test',
-      brazeExternalUserId: 'user_id',
+      brazeIdentifier: 'external_id',
+      interpretExternalUserId: 'asEventProperty',
+      externalUserId: 'user_id',
       includeSelfDescribingEvent: true,
       extractFromArray: true,
       includeEntities: 'all',
@@ -2531,7 +2812,9 @@ scenarios:
     const mockData = {
       apiEndpoint: 'https://test.test',
       apiKey: 'test',
-      brazeExternalUserId: 'user_id',
+      brazeIdentifier: 'external_id',
+      interpretExternalUserId: 'asEventProperty',
+      externalUserId: 'user_id',
       includeSelfDescribingEvent: true,
       extractFromArray: true,
       includeEntities: 'all',
