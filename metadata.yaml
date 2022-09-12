@@ -1,7 +1,14 @@
-homepage: "https://www.snowplowanalytics.com"
-documentation: "https://docs.snowplowanalytics.com/docs/forwarding-events-to-destinations/forwarding-events/google-tag-manager-server-side/braze-tag-for-gtm-ss/"
+homepage: "https://www.snowplow.io"
+documentation: "https://docs.snowplow.io/docs/forwarding-events-to-destinations/forwarding-events/google-tag-manager-server-side/braze-tag-for-gtm-ss"
 versions:
   # Latest version
+  - sha: c6e5caae316f7f5beb65ba8a358d7992334cf041
+    changeNotes: |2
+      Switch to snowplow.io domain (#7)
+      Allow using alias object as user identifier (#3)
+      Add option to include or exclude an entity (#5)
+      Standardize logs (#4)
+      Reduce duplication in tests (#6)
+  # Older versions
   - sha: bb92bfd9bc5726feaa77fcf14bbe9c656e5ef929
     changeNotes: Initial Version
-  # Older versions
