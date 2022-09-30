@@ -55,6 +55,14 @@ ___TEMPLATE_PARAMETERS___
     "alwaysInSummary": true
   },
   {
+    "type": "TEXT",
+    "name": "eventNameOverride",
+    "displayName": "Event Name Override",
+    "simpleValueType": true,
+    "alwaysInSummary": true,
+    "help": "Leave blank to inherit from common event properties"
+  },
+  {
     "type": "GROUP",
     "name": "brazeIdentifierGroup",
     "displayName": "Identity settings",
@@ -1179,7 +1187,7 @@ const mkEventObject = (evData, tagConfig) => {
   const properties = mkEventProperties(evData, tagConfig);
 
   return {
-    name: evData.event_name,
+    name: tagConfig.eventNameOverride || evData.event_name,
     time: getEventTime(tagConfig),
     properties: properties,
   };
