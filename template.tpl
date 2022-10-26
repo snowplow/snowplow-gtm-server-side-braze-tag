@@ -516,6 +516,14 @@ ___TEMPLATE_PARAMETERS___
     "subParams": [
       {
         "type": "TEXT",
+        "name": "eventNameOverride",
+        "displayName": "Event Name Override",
+        "simpleValueType": true,
+        "alwaysInSummary": false,
+        "help": "Use this option to override the name of the Braze event object. Leave blank to inherit from common event properties."
+      },
+      {
+        "type": "TEXT",
         "name": "timeProp",
         "displayName": "Event time property",
         "simpleValueType": true,
@@ -1179,7 +1187,7 @@ const mkEventObject = (evData, tagConfig) => {
   const properties = mkEventProperties(evData, tagConfig);
 
   return {
-    name: evData.event_name,
+    name: tagConfig.eventNameOverride || evData.event_name,
     time: getEventTime(tagConfig),
     properties: properties,
   };
@@ -2693,6 +2701,7 @@ scenarios:
     assertThat(body).isEqualTo(expectedBody);
 - name: Test advanced settings
   code: |
+    const testVariable = 'test_event';
     const mockData = {
       apiEndpoint: 'https://test.test',
       apiKey: 'test',
@@ -2704,6 +2713,7 @@ scenarios:
       includeEntities: 'all',
       includeCommonEventProperties: true,
       includeCommonUserProperties: true,
+      eventNameOverride: testVariable,
       timeProp: 'x-sp-true_tstamp',
       // to assert that default is debug
       // logType: undefined,
@@ -2774,7 +2784,7 @@ scenarios:
       ],
       events: [
         {
-          name: 'link_click',
+          name: testVariable,
           time: '2013-11-26T00:03:57.886Z', // true_tstamp
           properties: {
             page_location: 'http://www.snowplow.io',
