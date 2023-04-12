@@ -1029,7 +1029,7 @@ const getEventDataByKeys = (configProps) => {
   const props = {};
   configProps.forEach((p) => {
     let eventProperty = getEventData(p.key);
-    if (eventProperty) {
+    if (eventProperty !== undefined) {
       props[p.mappedKey || p.key] = eventProperty;
     }
   });
@@ -2494,7 +2494,16 @@ scenarios:
       extractFromArray: true,
       includeEntities: 'all',
       includeCommonEventProperties: false,
-      eventMappingRules: [{ key: 'ip_override', mappedKey: 'ip_address' }],
+      eventMappingRules: [
+        {
+          key: 'ip_override',
+          mappedKey: 'ip_address',
+        },
+        {
+          key: 'x-sp-br_features_flash',
+          mappedKey: 'foo',
+        },
+      ],
       includeCommonUserProperties: true,
       logType: 'always',
     };
@@ -2569,6 +2578,7 @@ scenarios:
           time: testTime,
           properties: {
             ip_address: '1.2.3.4',
+            foo: false,
             self_describing_event_com_snowplowanalytics_snowplow_link_click_1: {
               targetUrl: 'http://www.example.com',
               elementClasses: ['foreground'],
@@ -2616,6 +2626,10 @@ scenarios:
         {
           key: 'x-sp-contexts_com_snowplowanalytics_snowplow_client_session_1.0.userId',
           mappedKey: 'clientSessionUserId',
+        },
+        {
+          key: 'x-sp-contexts_com_youtube_youtube_1.0.autoPlay',
+          mappedKey: 'autoPlay',
         },
       ],
       logType: 'always',
@@ -2683,6 +2697,7 @@ scenarios:
           language: 'en-US',
           clientSessionUserId: 'fd0e5288-e89b-45df-aad5-6d0c6eda6198',
           device: 'myDevMan',
+          autoPlay: false,
           external_id: 'tester',
         },
       ],

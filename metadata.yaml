@@ -2,11 +2,15 @@ homepage: "https://www.snowplow.io"
 documentation: "https://docs.snowplow.io/docs/forwarding-events-to-destinations/forwarding-events/google-tag-manager-server-side/braze-tag-for-gtm-ss"
 versions:
   # Latest version
+  - sha: 8bfd8465d67870156240358554d4597a38655e9
+    changeNotes: |2
+      Update copyright to 2023 (#14)
+      Fix value check when populating properties (#13)
+  # Older versions
   - sha: c138bfbc4693a417403fa3b511439288bfe6c8cc
     changeNotes: |2
       Add GitHub Actions (#11)
       Allow event name overrides (#10)
-  # Older versions
   - sha: c6e5caae316f7f5beb65ba8a358d7992334cf041
     changeNotes: |2
       Switch to snowplow.io domain (#7)
