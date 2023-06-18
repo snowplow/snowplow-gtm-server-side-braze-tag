@@ -257,13 +257,47 @@ ___TEMPLATE_PARAMETERS___
     "groupStyle": "ZIPPY_CLOSED",
     "subParams": [
       {
-        "type": "CHECKBOX",
-        "name": "includeSelfDescribingEvent",
-        "checkboxText": "Include Self Describing event",
-        "simpleValueType": true,
-        "defaultValue": true,
-        "help": "Indicates if a Snowplow Self Describing event should be in the event object.",
-        "alwaysInSummary": true
+        "type": "GROUP",
+        "name": "selfDescribingEvent",
+        "displayName": "Snowplow Self Describing Event",
+        "groupStyle": "ZIPPY_OPEN",
+        "subParams": [
+          {
+            "type": "CHECKBOX",
+            "name": "includeSelfDescribingEvent",
+            "checkboxText": "Include Self Describing event",
+            "simpleValueType": true,
+            "alwaysInSummary": true,
+            "defaultValue": true,
+            "help": "Indicates if a Snowplow Self Describing event should be in the event object."
+          },
+          {
+            "type": "SELECT",
+            "name": "selfDescribingEventLocation",
+            "displayName": "Self Describing Event Location",
+            "macrosInSelect": false,
+            "selectItems": [
+              {
+                "value": "object",
+                "displayValue": "Nest under schema name"
+              },
+              {
+                "value": "root",
+                "displayValue": "Merge to root level"
+              }
+            ],
+            "simpleValueType": true,
+            "help": "Indicate the location where Snowplow Self Describing event properties should be added under Braze event properties.",
+            "enablingConditions": [
+              {
+                "paramName": "includeSelfDescribingEvent",
+                "paramValue": true,
+                "type": "EQUALS"
+              }
+            ],
+            "defaultValue": "object"
+          }
+        ]
       },
       {
         "type": "GROUP",
@@ -994,7 +1028,15 @@ const parseCustomEventAndEntities = (
       const cleanPropName = cleanPropertyName(prop);
 
       if (isSpSelfDescProp(prop) && tagConfig.includeSelfDescribingEvent) {
-        eventProperties[cleanPropName] = eventData[prop];
+        if (!isEmpty(eventData[prop]) && tagConfig.selfDescribingEventLocation == 'root') {
+          for(let key in eventData[prop]){
+            if(eventData[prop].hasOwnProperty(key)){
+              eventProperties[key] = eventData[prop][key];
+            }
+          }
+        }else{
+          eventProperties[cleanPropName] = eventData[prop];
+        }
         continue;
       }
 
@@ -1490,6 +1532,7 @@ scenarios:
       interpretExternalUserId: 'asEventProperty',
       externalUserId: 'user_id',
       includeSelfDescribingEvent: true,
+      selfDescribingEventLocation: 'object',
       extractFromArray: true,
       includeEntities: 'all',
       includeCommonEventProperties: true,
@@ -1635,6 +1678,7 @@ scenarios:
       interpretExternalUserId: 'asValue', // test also 'asValue' for 'external_id'
       externalUserId: 'someIdValue',
       includeSelfDescribingEvent: true,
+      selfDescribingEventLocation: 'object',
       extractFromArray: false,
       includeEntities: 'none',
       includeCommonEventProperties: true,
@@ -1730,7 +1774,7 @@ scenarios:
 
     const body = jsonApi.parse(argBody);
     assertThat(body).isEqualTo(expectedBody);
-- name: Test entity rules - include all - edit
+- name: Test entity rules - include all - edit - sde at root
   code: |
     const mockData = {
       apiEndpoint: 'https://test.test',
@@ -1742,7 +1786,8 @@ scenarios:
         'x-sp-contexts_com_snowplowanalytics_snowplow_client_session_1.0.userId',
       interpretAliasLabel: 'asEventProperty',
       aliasLabel: 'x-sp-app_id',
-      includeSelfDescribingEvent: false,
+      includeSelfDescribingEvent: true,
+      selfDescribingEventLocation: 'root',
       extractFromArray: true,
       includeEntities: 'all',
       entityMappingRules: [
@@ -1803,6 +1848,7 @@ scenarios:
           name: 'media_player_event',
           time: testTime,
           properties: {
+            type: 'play',
             page_location: 'http://localhost:8000/',
             page_encoding: 'windows-1252',
             screen_resolution: '1920x1080',
@@ -2532,7 +2578,7 @@ scenarios:
 
     const body = jsonApi.parse(argBody);
     assertThat(body).isEqualTo(expectedBody);
-- name: Test event property rules
+- name: Test event property rules - sde at root
   code: |
     const mockData = {
       apiEndpoint: 'https://test.test',
@@ -2541,6 +2587,7 @@ scenarios:
       interpretExternalUserId: 'asEventProperty',
       externalUserId: 'user_id',
       includeSelfDescribingEvent: true,
+      selfDescribingEventLocation: 'root',
       extractFromArray: true,
       includeEntities: 'all',
       includeCommonEventProperties: false,
@@ -2629,11 +2676,9 @@ scenarios:
           properties: {
             ip_address: '1.2.3.4',
             foo: false,
-            self_describing_event_com_snowplowanalytics_snowplow_link_click_1: {
-              targetUrl: 'http://www.example.com',
-              elementClasses: ['foreground'],
-              elementId: 'exampleLink',
-            },
+            targetUrl: 'http://www.example.com',
+            elementClasses: ['foreground'],
+            elementId: 'exampleLink',
             contexts_com_snowplowanalytics_snowplow_ua_parser_context_1: {
               useragentFamily: 'IE',
               useragentMajor: '7',
@@ -2664,6 +2709,7 @@ scenarios:
       interpretExternalUserId: 'asEventProperty',
       externalUserId: 'user_id',
       includeSelfDescribingEvent: true,
+      selfDescribingEventLocation: 'object',
       extractFromArray: true,
       includeEntities: 'none',
       includeCommonEventProperties: false,
@@ -2774,6 +2820,7 @@ scenarios:
       interpretExternalUserId: 'asEventProperty',
       externalUserId: 'user_id',
       includeSelfDescribingEvent: true,
+      selfDescribingEventLocation: 'object',
       extractFromArray: true,
       includeEntities: 'all',
       includeCommonEventProperties: true,
@@ -2891,6 +2938,7 @@ scenarios:
       interpretExternalUserId: 'asEventProperty',
       externalUserId: 'user_id',
       includeSelfDescribingEvent: true,
+      selfDescribingEventLocation: 'object',
       extractFromArray: true,
       includeEntities: 'all',
       includeCommonEventProperties: true,
