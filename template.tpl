@@ -1003,7 +1003,7 @@ const parseCustomEventAndEntities = (
       if (isSpSelfDescProp(prop) && tagConfig.includeSelfDescribingEvent) {
         if (!isEmpty(eventData[prop]) && tagConfig.selfDescribingEventLocation == 'root') {
           for(let key in eventData[prop]){
-            if(eventData.hasOwnProperty(prop)){
+            if(eventData[prop].hasOwnProperty(key)){
               eventProperties[key] = eventData[prop][key];
             }
           }
