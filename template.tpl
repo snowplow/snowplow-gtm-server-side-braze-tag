@@ -252,8 +252,8 @@ ___TEMPLATE_PARAMETERS___
   },
   {
     "type": "GROUP",
-    "name": "snowplowEventMapping",
-    "displayName": "Snowplow Event Mapping Options",
+    "name": "selfDescribingEvent",
+    "displayName": "Snowplow Self Describing Event Options",
     "groupStyle": "ZIPPY_CLOSED",
     "subParams": [
       {
@@ -265,6 +265,32 @@ ___TEMPLATE_PARAMETERS___
         "help": "Indicates if a Snowplow Self Describing event should be in the event object.",
         "alwaysInSummary": true
       },
+      {
+        "type": "RADIO",
+        "name": "selfDescribingEventLocation",
+        "displayName": "Self Describing Event Location",
+        "help": "Indicates where Snowplow Self Describing event should be in the event object.",
+        "defaultValue": "property",
+        "radioItems": [
+          {
+            "value": "property",
+            "displayValue": "Key = schema name, value = event properties"
+          },
+          {
+            "value": "root",
+            "displayValue": "Add SDE Event properties to root level of Braze event"
+          }
+        ],
+        "simpleValueType": true
+      },
+    ]
+  },
+  {
+    "type": "GROUP",
+    "name": "snowplowEventMapping",
+    "displayName": "Snowplow Event Mapping Options",
+    "groupStyle": "ZIPPY_CLOSED",
+    "subParams": [
       {
         "type": "GROUP",
         "name": "entityRules",
@@ -975,7 +1001,15 @@ const parseCustomEventAndEntities = (
       const cleanPropName = cleanPropertyName(prop);
 
       if (isSpSelfDescProp(prop) && tagConfig.includeSelfDescribingEvent) {
-        eventProperties[cleanPropName] = eventData[prop];
+        if (!isEmpty(eventData[prop]) && tagConfig.selfDescribingEventLocation == 'root') {
+          for(let key in eventData[prop]){
+            if(eventData.hasOwnProperty(prop)){
+              eventProperties[key] = eventData[prop][key];
+            }
+          }
+        }else{
+          eventProperties[cleanPropName] = eventData[prop];
+        }
         continue;
       }
 
