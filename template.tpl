@@ -28,7 +28,6 @@ ___INFO___
 
 ___TEMPLATE_PARAMETERS___
 
-
 [
   {
     "type": "TEXT",
@@ -599,6 +598,7 @@ ___TEMPLATE_PARAMETERS___
     ]
   }
 ]
+
 
 ___SANDBOXED_JS_FOR_SERVER___
 
