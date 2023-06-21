@@ -28,6 +28,7 @@ ___INFO___
 
 ___TEMPLATE_PARAMETERS___
 
+
 [
   {
     "type": "TEXT",
@@ -252,45 +253,53 @@ ___TEMPLATE_PARAMETERS___
   },
   {
     "type": "GROUP",
-    "name": "selfDescribingEvent",
-    "displayName": "Snowplow Self Describing Event Options",
-    "groupStyle": "ZIPPY_CLOSED",
-    "subParams": [
-      {
-        "type": "CHECKBOX",
-        "name": "includeSelfDescribingEvent",
-        "checkboxText": "Include Self Describing event",
-        "simpleValueType": true,
-        "defaultValue": true,
-        "help": "Indicates if a Snowplow Self Describing event should be in the event object.",
-        "alwaysInSummary": true
-      },
-      {
-        "type": "RADIO",
-        "name": "selfDescribingEventLocation",
-        "displayName": "Self Describing Event Location",
-        "help": "Indicates where Snowplow Self Describing event should be in the event object.",
-        "defaultValue": "property",
-        "radioItems": [
-          {
-            "value": "property",
-            "displayValue": "Key = schema name, value = event properties"
-          },
-          {
-            "value": "root",
-            "displayValue": "Add SDE Event properties to root level of Braze event"
-          }
-        ],
-        "simpleValueType": true
-      },
-    ]
-  },
-  {
-    "type": "GROUP",
     "name": "snowplowEventMapping",
     "displayName": "Snowplow Event Mapping Options",
     "groupStyle": "ZIPPY_CLOSED",
     "subParams": [
+      {
+        "type": "GROUP",
+        "name": "selfDescribingEvent",
+        "displayName": "Snowplow Self Describing Event",
+        "groupStyle": "ZIPPY_OPEN",
+        "subParams": [
+          {
+            "type": "CHECKBOX",
+            "name": "includeSelfDescribingEvent",
+            "checkboxText": "Include Self Describing event",
+            "simpleValueType": true,
+            "alwaysInSummary": true,
+            "defaultValue": true,
+            "help": "Indicates if a Snowplow Self Describing event should be in the event object."
+          },
+          {
+            "type": "SELECT",
+            "name": "selfDescribingEventLocation",
+            "displayName": "Self Describing Event Location",
+            "macrosInSelect": false,
+            "selectItems": [
+              {
+                "value": "object",
+                "displayValue": "Schema name object on Braze Event"
+              },
+              {
+                "value": "root",
+                "displayValue": "SDE Event Properties added to Braze Event Root"
+              }
+            ],
+            "simpleValueType": true,
+            "help": "Indicates where Snowplow Self Describing Event should be in Braze event properties.",
+            "enablingConditions": [
+              {
+                "paramName": "includeSelfDescribingEvent",
+                "paramValue": true,
+                "type": "EQUALS"
+              }
+            ],
+            "defaultValue": "object"
+          }
+        ]
+      },
       {
         "type": "GROUP",
         "name": "entityRules",
@@ -590,7 +599,6 @@ ___TEMPLATE_PARAMETERS___
     ]
   }
 ]
-
 
 ___SANDBOXED_JS_FOR_SERVER___
 
