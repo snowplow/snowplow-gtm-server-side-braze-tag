@@ -586,12 +586,12 @@ const brazeApiPath = '/users/track';
 
 // Helpers
 
-/*
+/**
  * Assumes logType argument is string.
  * Determines if logging is enabled.
  *
- * @param logType {string} - the logType set ('no', 'debug', 'always')
- * @returns - whether logging is enabled (boolean)
+ * @param {string} logType - The logType set ('no', 'debug', 'always')
+ * @returns {boolean} Whether logging is enabled
  */
 const determineIsLoggingEnabled = (logType) => {
   const containerVersion = getContainerVersion();
@@ -613,12 +613,13 @@ const determineIsLoggingEnabled = (logType) => {
   return data.logType === 'always';
 };
 
-/*
+/**
  * Creates the log message and logs it to console.
  *
- * @param typeName {string} - the type of log ('Message', 'Request', 'Response')
- * @param stdInfo {Object} - the standard info for all logs (Name, Type, TraceId, EventName)
- * @param logInfo {Object} - an object including information for the specific log type
+ * @param {string} typeName - The type of log ('Message', 'Request', 'Response')
+ * @param {Object} stdInfo - The standard info for all logs (Name, Type, TraceId, EventName)
+ * @param {Object} logInfo - An object including information for the specific log type
+ * @returns {undefined}
  */
 const doLogging = (typeName, stdInfo, logInfo) => {
   const logMessage = {
@@ -651,6 +652,12 @@ const doLogging = (typeName, stdInfo, logInfo) => {
   log(JSON.stringify(logMessage));
 };
 
+/**
+ * Removes equal to null properties from given object.
+ *
+ * @param {Object} obj - The object to clean
+ * @returns {Object}
+ */
 const cleanObject = (obj) => {
   let target = {};
 
@@ -663,6 +670,12 @@ const cleanObject = (obj) => {
   return target;
 };
 
+/**
+ * Merges objects.
+ *
+ * @param {Object[]} args - The array of objects to merge
+ * @returns {Object} The resulting object
+ */
 const merge = (args) => {
   let target = {};
 
@@ -681,21 +694,21 @@ const merge = (args) => {
   return target;
 };
 
-/*
+/**
  * Returns whether a string is upper case.
  *
- * @param value {string} - the string to check
- * @returns - boolean
+ * @param {string} value - The string to check
+ * @returns {boolean}
  */
 const isUpper = (value) => {
   return value === value.toUpperCase() && value !== value.toLowerCase();
 };
 
-/*
+/**
  * Converts a string to snake case.
  *
- * @param value {string} - the string to convert
- * @returns - the converted string
+ * @param {string} value - The string to convert
+ * @returns {string} The converted string
  */
 const toSnakeCase = (value) => {
   let result = '';
@@ -712,12 +725,12 @@ const toSnakeCase = (value) => {
   return result;
 };
 
-/*
+/**
  * Left-pads an integer with zeros. Assumes a non-negative integer.
  *
- * @param x {integer} - the integer to pad
- * @param totalLen {integer} - the desired total length
- * @returns - the resulting string after padding with zeros
+ * @param {integer} x - The integer to pad
+ * @param {integer} totalLen - The desired total length
+ * @returns {string} The resulting string after padding with zeros
  */
 const pad = (x, totalLen) => {
   const s = x.toString();
@@ -727,9 +740,17 @@ const pad = (x, totalLen) => {
   return s;
 };
 
-/*
+/**
  * Given the time components, returns the ISO-8601 time code.
  *
+ * @param {integer} yr - Year
+ * @param {integer} mon - Month
+ * @param {integer} day - Day
+ * @param {integer} hrs - Hours
+ * @param {integer} mins - Minutes
+ * @param {integer} secs - Seconds
+ * @param {integer} msecs - Milliseconds
+ * @returns {string}
  */
 const formatISO = (yr, mon, day, hrs, mins, secs, msecs) => {
   const isoDate = [yr.toString(), pad(mon, 2), pad(day, 2)].join('-');
@@ -738,9 +759,12 @@ const formatISO = (yr, mon, day, hrs, mins, secs, msecs) => {
   return isoDate + 'T' + isoTime + '.' + pad(msecs, 3) + 'Z';
 };
 
-/*
+/**
  * Transforms a unix timestamp in milliseconds to ISO-8601 time code.
  * Ref: https://howardhinnant.github.io/date_algorithms.html#civil_from_days
+ *
+ * @param {integer} unixMillis - The unix time in millis
+ * @returns {string} The ISO time code
  */
 const unixMillisToISO = (unixMillis) => {
   const totalSecs = Math.floor(unixMillis / 1000);
@@ -774,32 +798,32 @@ const unixMillisToISO = (unixMillis) => {
   return formatISO(year, month, day, hour, minute, second, millis);
 };
 
-/*
+/**
  * Given an array and a configuration object,
  *  returns the element from a single element array or the array itself.
  *
- * @param arr {Array} - the input array
- * @param tagConfig {Object} - the tag configuration object
- *        tagConfig.extractFromArray - whether to extract a single element
- * @returns - the array or its single element
+ * @param {Array} arr - The input array
+ * @param {Object} tagConfig - The tag configuration object
+ * @param {boolean} tagConfig.extractFromArray - Whether to extract a single element
+ * @returns {*} The array or its single element
  */
 const extractFromArrayIfSingleElement = (arr, tagConfig) =>
   arr.length === 1 && tagConfig.extractFromArray ? arr[0] : arr;
 
-/*
+/**
  * Cleans a name from the GTM-SS Snowplow prefix ('x-sp-').
  *
- * @param prop {string} - the property name
- * @returns - the property name with the GTM-SS Snowplow prefix removed.
+ * @param {string} prop - The property name
+ * @returns {string} The property name with the GTM-SS Snowplow prefix removed.
  */
 const cleanPropertyName = (prop) => prop.replace('x-sp-', '');
 
-/*
+/**
  * Parses a Snowplow schema to the expected major version format,
  *  also prefixed so as to match the contexts' output of the Snowplow Client.
  *
- * @param schema {string} - the input schema
- * @returns - the expected output client event property
+ * @param schema {string} - The input schema
+ * @returns {string} The expected output client event property
  */
 const parseSchemaToMajorKeyValue = (schema) => {
   if (schema.indexOf('x-sp-contexts_') === 0) return schema;
@@ -819,27 +843,34 @@ const parseSchemaToMajorKeyValue = (schema) => {
   return schema;
 };
 
-/*
+/**
  * Returns whether a property name is a Snowplow self-describing event property.
+ *
+ * @param {string} prop - The property name
+ * @returns {boolean}
  */
 const isSpSelfDescProp = (prop) => {
   return prop.indexOf('x-sp-self_describing_event_') === 0;
 };
 
-/*
+/**
  * Returns whether a property name is a Snowplow context/entity property.
+ *
+ * @param {string} prop - The property name
+ * @returns {boolean}
  */
 const isSpContextsProp = (prop) => {
   return prop.indexOf('x-sp-contexts_') === 0;
 };
 
-/*
+/**
  * Given a list of entity references and an entity name,
  * returns the index of a matching reference.
  * Matching reference means whether the entity name starts with ref.
  *
- * @param entity {string} - the entity name to match
- * @param refsList {Array} - an array of strings
+ * @param {string} entity - The entity name to match
+ * @param {string[]} refsList - An array of strings
+ * @returns {integer}
  */
 const getReferenceIdx = (entity, refsList) => {
   for (let i = 0; i < refsList.length; i++) {
@@ -850,10 +881,13 @@ const getReferenceIdx = (entity, refsList) => {
   return -1;
 };
 
-/*
+/**
  * Filters out invalid rules to avoid unintended behavior.
  * (e.g. version control being ignored if version num is not included in name)
  * Assumes that a rule contains 'key' and 'version' properties.
+ *
+ * @param {Object[]} rules - The array of rules
+ * @returns {Object[]} The valid rules
  */
 const cleanRules = (rules) => {
   return rules.filter((row) => {
@@ -870,8 +904,11 @@ const cleanRules = (rules) => {
   });
 };
 
-/*
+/**
  * Parses the entity exclusion rules from the tag configuration.
+ *
+ * @param {Object} tagConfig - The tag configuration
+ * @returns {Object[]}
  */
 const parseEntityExclusionRules = (tagConfig) => {
   const rules = tagConfig.entityExclusionRules;
@@ -890,8 +927,11 @@ const parseEntityExclusionRules = (tagConfig) => {
   return [];
 };
 
-/*
+/**
  * Parses the entity inclusion rules from the tag configuration.
+ *
+ * @param {Object} tagConfig - The tag configuration
+ * @returns {Object[]}
  */
 const parseEntityRules = (tagConfig) => {
   const rules = tagConfig.entityMappingRules;
@@ -913,9 +953,12 @@ const parseEntityRules = (tagConfig) => {
   return [];
 };
 
-/*
+/**
  * Given the inclusion rules and the excluded entity references,
  * returns the final entity mapping rules.
+ *
+ * @param {Object} tagConfig - The tag configuration
+ * @returns {Object[]}
  */
 const finalizeEntityRules = (inclusionRules, excludedRefs) => {
   const finalEntities = inclusionRules.filter((row) => {
@@ -925,14 +968,14 @@ const finalizeEntityRules = (inclusionRules, excludedRefs) => {
   return finalEntities;
 };
 
-/*
+/**
  * Modifies the respective objects to populate according to Snowplow Event Context Rules.
  *
- * @param eventData {Object} - the client event object
- * @param tagConfig {Object} - the tag configuration object
- * @param eventProperties {Object} - the object to populate for `event_object`
- * @param userAttributes {Object} - the object to populate for `user_attributes_object`
- * @returns - undefined
+ * @param {Object} eventData - The client event object
+ * @param {Object} tagConfig - The tag configuration object
+ * @param {Object} eventProperties - The object to populate for `event_object`
+ * @param {Object} userAttributes - The object to populate for `user_attributes_object`
+ * @returns {undefined}
  */
 const parseCustomEventAndEntities = (
   eventData,
@@ -982,12 +1025,12 @@ const parseCustomEventAndEntities = (
   }
 };
 
-/*
+/**
  * Utility function to check if an object has own properties.
  * Assumes its input is an object in standard JavaScript.
  *
- * @param obj {string} - the object to check
- * @returns - the expected output client event property
+ * @param {Object} obj - The object to check
+ * @returns {boolean}
  */
 const isEmpty = (obj) => {
   for (let prop in obj) {
@@ -998,8 +1041,11 @@ const isEmpty = (obj) => {
   return true;
 };
 
-/*
+/**
  * Utility function that creates an object according to Event Property Rules.
+ *
+ * @param {Object[]} configProps - The event property rules
+ * @returns {Object}
  */
 const getEventDataByKeys = (configProps) => {
   const props = {};
@@ -1012,11 +1058,14 @@ const getEventDataByKeys = (configProps) => {
   return props;
 };
 
-/*
+/**
  * Given the client event and tag configuration,
  *   returns the Braze API User Attributes Object:
  *   https://www.braze.com/docs/api/objects_filters/user_attributes_object/
  *
+ * @param {Object} evData - The client event object
+ * @param {Object} tagConfig - The tag configuration
+ * @returns {Object}
  */
 const mkUserAttributesObject = (evData, tagConfig) => {
   const attributes = {
@@ -1044,9 +1093,13 @@ const mkUserAttributesObject = (evData, tagConfig) => {
   return attributes;
 };
 
-/*
+/**
  * Given the event data the tag configuration,
  *   returns the 'properties' of a Braze API Event Object
+ *
+ * @param {Object} evData - The client event object
+ * @param {Object} tagConfig - The tag configuration
+ * @returns {Object}
  */
 const mkEventProperties = (evData, tagConfig) => {
   const properties = {};
@@ -1066,8 +1119,12 @@ const mkEventProperties = (evData, tagConfig) => {
   return properties;
 };
 
-/*
+/**
  * Helper function to allow interpreting a value as an event property.
+ *
+ * @param {string} interpret - The way to interpret value
+ * @param {*} value - The value to interpret
+ * @returns {*}
  */
 const makeValue = (interpret, value) => {
   if (interpret === 'asEventProperty') {
@@ -1076,9 +1133,12 @@ const makeValue = (interpret, value) => {
   return value;
 };
 
-/*
+/**
  * Constructs the braze identifier (external_id string or user_alias object).
  * See also: https://www.braze.com/docs/api/objects_filters/user_alias_object
+ *
+ * @param {Object} tagConfig - The tag configuration
+ * @returns {(Object|string)}
  */
 const mkBrazeIdentifier = (tagConfig) => {
   switch (tagConfig.brazeIdentifier) {
@@ -1105,11 +1165,14 @@ const mkBrazeIdentifier = (tagConfig) => {
   }
 };
 
-/*
+/**
  * Returns a function that
  *   accepts an object as argument,
  *   adds the correct Braze user identifier to that object (side effects)
  *   and returns it.
+ *
+ * @param {Object} tagConfig - The tag configuration
+ * @returns {function}
  */
 const idAdder = (tagConfig) => {
   // mapping configuration fields to Braze identifiers
@@ -1140,9 +1203,12 @@ const idAdder = (tagConfig) => {
   };
 };
 
-/*
+/**
  * Given the tag configuration,
  *   returns the value to be used as the time property of a Braze event.
+ *
+ * @param {Object} tagConfig - The tag configuration
+ * @returns {*}
  */
 const getEventTime = (tagConfig) => {
   if (tagConfig.timeProp) {
@@ -1151,13 +1217,17 @@ const getEventTime = (tagConfig) => {
   return unixMillisToISO(getTimestampMillis());
 };
 
-/*
+/**
  * Given the event data the tag configuration, returns a Braze API Event Object
  *   populating also the required 'name' and 'time' keys:
  *   https://www.braze.com/docs/api/objects_filters/event_object/
  * Notes on time limitations:
  *   - is required for events in Braze API
  *   - it has to be in ISO-8601 format
+ *
+ * @param {Object} evData - The client event
+ * @param {Object} tagConfig - The tag configuration
+ * @returns {Object}
  */
 const mkEventObject = (evData, tagConfig) => {
   const properties = mkEventProperties(evData, tagConfig);
@@ -1169,9 +1239,13 @@ const mkEventObject = (evData, tagConfig) => {
   };
 };
 
-/*
+/**
  * Given the event data and the tag configuration,
  *   returns the body of the request to Braze API.
+ *
+ * @param {Object} evData - The client event
+ * @param {Object} tagConfig - The tag configuration
+ * @returns {Object}
  */
 const mkBrazePayload = (evData, tagConfig) => {
   const userAttrs = mkUserAttributesObject(evData, tagConfig);
@@ -1193,12 +1267,12 @@ const mkBrazePayload = (evData, tagConfig) => {
   return cleanObject(requestPayload);
 };
 
-/*
+/**
  * Creates the HTTP request options for Braze API.
  *
- * @param tagConfig {Object} - the tag configuration
- * @param redact {boolean} - whether to redact authorization header
- * @returns - the expected output client event property
+ * @param {Object} tagConfig - The tag configuration
+ * @param {boolean} redact - Whether to redact authorization header
+ * @returns {Object} The HTTP request options
  */
 const mkRequestOptions = (tagConfig, redact) => {
   const authKey = redact ? 'redacted' : tagConfig.apiKey;
