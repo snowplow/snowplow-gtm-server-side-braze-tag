@@ -568,6 +568,7 @@ ___TEMPLATE_PARAMETERS___
 
 ___SANDBOXED_JS_FOR_SERVER___
 
+const createRegex = require('createRegex');
 const getAllEventData = require('getAllEventData');
 const getContainerVersion = require('getContainerVersion');
 const getEventData = require('getEventData');
@@ -678,27 +679,6 @@ const merge = (args) => {
   }
 
   return target;
-};
-
-/*
- * Replaces all occurences of a substring in a string.
- *
- * @param str {string} - the string to replace into
- * @param substr {string} - the substring to replace
- * @param newSubstr {string} - the replacement substring
- * @returns - the string with all occurences of substr replaced with newSubstr
- */
-const replaceAll = (str, substr, newSubstr) => {
-  let finished = false,
-    result = str;
-  while (!finished) {
-    const newStr = result.replace(substr, newSubstr);
-    if (result === newStr) {
-      finished = true;
-    }
-    result = newStr;
-  }
-  return result;
 };
 
 /*
@@ -825,15 +805,11 @@ const parseSchemaToMajorKeyValue = (schema) => {
   if (schema.indexOf('x-sp-contexts_') === 0) return schema;
   if (schema.indexOf('contexts_') === 0) return 'x-sp-' + schema;
   if (schema.indexOf('iglu:') === 0) {
-    let fixed = replaceAll(
-      replaceAll(
-        schema.replace('iglu:', '').replace('jsonschema/', ''),
-        '.',
-        '_'
-      ),
-      '/',
-      '_'
-    );
+    const rexp = createRegex('[./]', 'g');
+    let fixed = schema
+      .replace('iglu:', '')
+      .replace('jsonschema/', '')
+      .replace(rexp, '_');
 
     for (let i = 0; i < 2; i++) {
       fixed = fixed.substring(0, fixed.lastIndexOf('-'));
