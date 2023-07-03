@@ -2,12 +2,14 @@ homepage: "https://www.snowplow.io"
 documentation: "https://docs.snowplow.io/docs/forwarding-events-to-destinations/forwarding-events/google-tag-manager-server-side/braze-tag-for-gtm-ss"
 versions:
   # Latest version
+  - sha: 5f800b2392b661399c452451f39d403077b88a67
+    changeNotes: Fix version free entity matching (#21)
+  # Older versions
   - sha: 239f5ae41bf77e19e87b1fe6fa2fe1fb090c3010
     changeNotes: |2
       Allow adding self describing event data to root level of Braze event (#18)
       Make function descriptions consistent with JSDoc (#19)
       Switch to using createRegex (#17)
-  # Older versions
   - sha: 8bfd8465d67870156240358554d4597a38655e9
     changeNotes: |2
       Update copyright to 2023 (#14)
